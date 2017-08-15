@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>gtm</artifactId>
+		<groupId>br.com.globality</groupId>
+		<version>0.0.1</version>
+	</parent>
+
+
+	<artifactId>gtm-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<name>Projeto GTM: EAR</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.10.1</version>
+				<configuration>
+					<modules>
+						<webModule>
+							<groupId>br.com.globality</groupId>
+							<artifactId>gtm-rest</artifactId>
+							<contextRoot>/gtm-rest</contextRoot>
+							<bundleFileName>gtm-rest.war</bundleFileName>
+						</webModule>
+						<webModule>
+							<groupId>br.com.globality</groupId>
+							<artifactId>gtm-web</artifactId>
+							<contextRoot>/</contextRoot>
+							<bundleFileName>gtm-web.war</bundleFileName>
+						</webModule>
+						<ejbModule>
+							<groupId>br.com.globality</groupId>
+							<artifactId>gtm-service</artifactId>
+							<bundleFileName>gtm-service.jar</bundleFileName>
+						</ejbModule>
+					</modules>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <version>7.9.Final</version>
+				<configuration>
+					<hostname>${jboss-hostname}</hostname>
+					<username>${jboss-username}</username>
+					<password>${jboss-password}</password>
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>br.com.globality</groupId>
+			<artifactId>gtm-service</artifactId>
+			<version>${project.version}</version>
+			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>br.com.globality</groupId>
+			<artifactId>gtm-rest</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>br.com.globality</groupId>
+			<artifactId>gtm-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+</project>

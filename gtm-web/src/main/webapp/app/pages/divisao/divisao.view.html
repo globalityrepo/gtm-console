@@ -1,0 +1,47 @@
+<div>
+    <h1>
+        <i class="btn glyphicon glyphicon-folder-open disabled" style="vertical-align: middle"></i>
+        <a ui-sref="divisao">Divis&atilde;o</a>
+        <small>
+            ({{divisaoCtrl.gridController.allItems.length}})
+        </small>
+    </h1>
+
+    <div crud-grid
+         column-button-click='divisaoCtrl.gridOnButtonClick'
+         initialized='divisaoCtrl.gridOnInitialized'
+         server-url='{{divisaoCtrl.serverUrl}}'
+         columns-definition='[
+         {
+            "binding"       :"id",
+            "type"          :"text",
+            "required"      :"true",
+            "hidden"        :"true"
+         },
+         {
+            "binding"       :"codigo",
+            "header"        :"C&oacute;digo",
+            "type"          :"text",
+            "required"      :"true"
+         },
+         {
+            "binding"       :"descricao",
+            "header"        :"Descri&ccedil;&atilde;o",
+            "type"          :"text",
+            "required"      :"false"
+         },
+         {
+             "type"         :"button",
+             "icon"         :"btn glyphicon glyphicon-plus",
+             "buttonid"     :"plus",
+             "class"        :"column-width-auto"
+         },
+         {
+             "type"         :"button",
+             "icon"         :"btn glyphicon glyphicon-minus",
+             "buttonid"     :"minus",
+             "class"        :"column-width-auto"
+         }
+         ]'>
+    </div>
+</div>
