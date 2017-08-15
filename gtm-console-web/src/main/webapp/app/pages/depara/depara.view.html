@@ -1,0 +1,365 @@
+<div id="top" class="row" ng-init="init()">
+    <div class="col-md-8">
+        <h2>{{'label.depara' | translate}}</h2>
+    </div>
+ 
+    <div class="col-md-3">
+        <form name="formFiltro" ng-submit="aplicarFiltro()">
+	        <div class="input-group h2">
+	       	    <input name="filtro" ng-model="filtro" class="form-control" id="search" type="text" placeholder="{{'label.pesquisaritens' | translate}}">
+	            <span class="input-group-btn">
+	                <button type="submit" ng-class="'btn btn-' + config.skin">
+	                    <span class="glyphicon glyphicon-search"></span>
+	                </button>
+	            </span>
+	            <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	        </div>
+	    </form>
+    </div>
+ 
+    <div class="col-md-1">
+    	<!-- Controle Habilitado -->
+        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" ng-click="acionarInclusao()" ng-disabled="!isUserAdmCrossReference || !AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_INCLUIR)">{{'label.incluir' | translate}}</a>
+    </div>
+</div> <!-- /#top -->
+
+<div id="list" class="row" style="margin-top:21px;">
+ 	
+    <div class="table-responsive col-md-12">
+        <table class="table table-striped" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th width="80">{{'label.codigo' | translate}}</th>
+                    <th>{{'label.entidade' | translate}}</th>
+                    <th width="230">{{'label.aplicacaoA' | translate}}</th>
+                    <th width="230">{{'label.aplicacaoB' | translate}}</th>
+                    <th width="260">{{'label.atualizadoem' | translate}}</th>
+                    <th width="126" class="actions">{{'label.acoes' | translate}}</th>
+                 </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="itemGrid in itens">
+                    <td>{{itemGrid.codigo}}</td>
+                    <td>{{itemGrid.entidadeAplicacaoDe.entidade.codigo}} - {{itemGrid.entidadeAplicacaoDe.entidade.descricao}}</td>
+                    <td>{{itemGrid.entidadeAplicacaoDe.aplicacao.codigo}} - {{itemGrid.entidadeAplicacaoDe.aplicacao.descricao}}</td>
+                    <td>{{itemGrid.entidadeAplicacaoPara.aplicacao.codigo}} - {{itemGrid.entidadeAplicacaoPara.aplicacao.descricao}}</td>
+                    <td>{{(itemGrid.dataAlteracao!=null ? itemGrid.dataAlteracao : itemGrid.dataInclusao) | date:'dd-MM-yy HH:mm:ss'}}&nbsp;&nbsp;|&nbsp;&nbsp;{{(itemGrid.usuarioAlteracao!=null ? itemGrid.usuarioAlteracao.codigo : itemGrid.usuarioInclusao.codigo)}}</td>
+                    <td class="actions">
+                        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_ALTERAR)" ng-click="acionarAlteracao(itemGrid)">{{'label.alterar' | translate}}</a>&nbsp;
+				       	<a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!isUserAdmCrossReference || !AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_EXCLUIR) || itemGrid.hasRestricaoExclusao" ng-click="acionarExclusao(itemGrid)">{{'label.excluir' | translate}}</a>
+				    </td>
+                </tr> 
+            </tbody>
+         </table>
+ 
+     </div>
+ </div> <!-- /#list -->
+
+ <div id="bottom" class="row">
+    <div class="col-md-4">
+    	
+    </div>
+    <div class="col-md-4">
+    	<ul class="pagination">
+        	<li ng-class="currentPage==1 ? 'disabled' : ''"><a href="javascript:void(0)" ng-click="currentPage==1 ? void(0) : abrirPagina(currentPage-1)">&lt; {{'label.anterior' | translate}}</a></li>
+            <li ng-class="currentPage==$index+1 ? 'disabled' : ''" ng-repeat="i in getNumber(queryPages) track by $index"><a href="javascript:void(0)" ng-click="currentPage==$index+1 ? void(0) : abrirPagina($index+1)">{{$index+1}}</a></li>
+            <li ng-class="currentPage>=queryPages ? 'disabled' : 'next'"><a href="javascript:void(0)" ng-click="currentPage>=queryPages ? void(0) : abrirPagina(currentPage+1)" rel="next">{{'label.proximo' | translate}} &gt;</a></li>
+        </ul><!-- /.pagination -->
+    </div>
+    <div class="col-md-4" style="text-align:right; margin-top:26px;">
+    	<label class="paginacao-legenda" ng-show="querySize&gt;0">{{'label.exibindoregistros' | translate}} {{numFirstReg}}-{{numLastReg}} {{'label.de' | translate}} {{querySize}}</label>
+    </div>
+</div> <!-- /#bottom -->
+
+<!-- Modal -->
+<div class="modal fade" id="cadastro-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document" style="width:1060px;">
+        <div class="modal-content">
+            <form name="form" ng-submit="!item.id ? incluir() : alterar()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaCadastroModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!item.id">{{'label.incluirdepara' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="item.id">{{'label.alterardepara' | translate}}</h4>
+	                <span ng-show="item.id>0" style="color:#777777; font-size:10pt;">{{'label.atualizadoem' | translate}}:&nbsp;
+		            	<span ng-show="item.dataAlteracao!=null">{{item.dataAlteracao | date:'dd-MM-yy HH:mm:ss'}}&nbsp;&nbsp;{{'label.por' | translate}}: {{item.usuarioAlteracao.codigo}}</span>
+		            	<span ng-show="item.dataAlteracao==null">{{item.dataInclusao | date:'dd-MM-yy HH:mm:ss'}}&nbsp;&nbsp;{{'label.por' | translate}}: {{item.usuarioInclusao.codigo}}</span>
+	            	</span>
+	            </div>
+	            <div class="modal-body">
+	               <div class="row">
+		               
+		               <div class="col-md-3" style="padding-right:0px; width:28%">
+	                		
+	                	   <div class="form-group" ng-show="item.id!=0">
+				               <label>{{'label.codigo' | translate}}:&nbsp;&nbsp;{{item.codigo}}</label>
+				           </div>
+	                		
+			               <div class="form-group" ng-class="{ 'has-error': form.cbEntidade.$dirty && form.cbEntidade.$error.required }">
+				               	<label for="cbEntidade">{{'label.entidade' | translate}}</label><label class="labelObrigatorio">*</label>
+				               	<select name="cbEntidade" id="cbEntidade" class="form-control app-field" ng-model="item.entidade.id"
+										ng-options="opt.id as opt.codigo + ' - ' + opt.descricao for opt in entidades" ng-disabled="item.id!=0"
+										ng-change="carregarEntidadeAplicacaoA()" required>
+									<option value="">{{'label.comboboxpadrao' | translate}}</option>
+								</select>
+				           </div>
+				           
+				           <div class="form-group" ng-class="{ 'has-error': form.cbAplicacaoA.$dirty && form.cbAplicacaoA.$error.required }">
+				               	<label for="cbAplicacaoA">{{'label.aplicacaoA' | translate}}</label><label class="labelObrigatorio">*</label>
+				               	<select name="cbAplicacaoA" id="cbAplicacaoA" class="form-control app-field" ng-model="item.entidadeAplicacaoDe.id" 
+				               			ng-disabled="item.id!=0 || item.entidade.id==undefined" 
+				               			ng-options="opt.id as opt.aplicacao.codigo + ' - ' + opt.aplicacao.descricao for opt in entidadeAplicacoesA" ng-change="carregarEntidadeAplicacaoB()" required>
+									<option value="">{{'label.comboboxpadrao' | translate}}</option>
+								</select>
+				           </div>
+				               
+				           <div class="form-group" ng-class="{ 'has-error': form.cbAplicacaoB.$dirty && form.cbAplicacaoB.$error.required }">
+				               <label for="cbAplicacaoB">{{'label.aplicacaoB' | translate}}</label><label class="labelObrigatorio">*</label>
+				               	<select name="cbAplicacaoB" id="cbAplicacaoB" class="form-control app-field" ng-model="item.entidadeAplicacaoPara.id" 
+				               			ng-change="carregarMassasDeDados()" ng-disabled="item.id!=0 || item.entidadeAplicacaoDe.id==undefined" 
+				               			ng-options="opt.id as opt.aplicacao.codigo + ' - ' + opt.aplicacao.descricao for opt in entidadeAplicacoesB" required>
+									<option value="">{{'label.comboboxpadrao' | translate}}</option>
+								</select>
+						   </div>
+						   
+						   <div class="row" style="text-align:right; margin-right:-3px; margin-top:30px;">
+						   		<button type="button" ng-class="'btn btn-' + config.skin" data-toggle="modal" data-target="#import-arquivo-modal" ng-disabled="massaDeDadosAplicacaoA.length==0 && massaDeDadosAplicacaoB.length==0">{{'label.importarCsv' | translate}}</button>
+						   </div>
+						   
+						</div>
+			       	   	
+			       	   	<div class="col-md-9" style="width:72%">
+			       	   	
+			       	   		<ul class="nav nav-tabs" style="margin-top:10px;">
+							  <li id="tabDadosCruzadosOpt" class="active"><a data-toggle="tab" data-target="#tabDadosCruzados">{{'label.dadoscruzados' | translate}} ({{item.registrosDePara.length}})</a></li>
+							  <li id="tabPermissoesAcessoOpt" ng-show="isUserAdmCrossReference"><a data-toggle="tab" data-target="#tabPermissoesAcesso">{{'label.acessosdelegados' | translate}} ({{item.liberarAcesso ? ('label.todos' | translate) : item.acessosDelegados.length}})</a></li>
+							</ul>
+								            		            	
+						   	<div class="tab-content" style="border-left: 1px solid #e3e3e3; border-right: 1px solid #e3e3e3; border-bottom: 1px solid #e3e3e3;">
+								
+								<div id="tabDadosCruzados" class="tab-pane fade in active" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:16px; height:360px; overflow-y:scroll;">
+			       	  				
+			       	  				<div id="top" class="row" style="padding-top:4px;">
+	       	  							<div class="col-md-1" style="width:36px; padding:0px; padding-top:5px; padding-left:12px;">
+							        		<label for="cbMassaDadosA">(A)</label>
+							        	</div>
+							        	<div class="col-md-4" style="width:260px; padding:0px;">
+							        		<select name="cbMassaDadosA" id="cbMassaDadosA" class="form-control app-field" ng-model="registroASel"
+													ng-options="opt as opt.codigo + ' - ' + opt.descricao for opt in massaDeDadosAplicacaoA" ng-disabled="massaDeDadosAplicacaoA.length==0">
+												<option value="">{{'label.comboboxpadrao' | translate}}</option>
+											</select>
+							        	</div>
+							        	<div class="col-md-1" style="width:36px; padding:0px; padding-top:5px; padding-left:12px;">
+							        		<label for="cbMassaDadosB">(B)</label>
+							        	</div>
+							        	<div class="col-md-4" style="width:260px; padding:0px;">
+							        		<select name="cbMassaDadosB" id="cbMassaDadosB" class="form-control app-field" ng-model="registroBSel"
+													ng-options="opt as opt.codigo + ' - ' + opt.descricao for opt in massaDeDadosAplicacaoB" ng-disabled="massaDeDadosAplicacaoB.length==0">
+												<option value="">{{'label.comboboxpadrao' | translate}}</option>
+											</select>
+							        	</div>
+							        	<div class="col-md-2 right" style="padding:0px; padding-right:15px; text-align:right;">
+							        		<button type="button" ng-class="'btn btn-' + config.skin"  
+							        		ng-disabled="registroASel==undefined || registroBSel==undefined"
+							        		ng-click="adicionarRegistroDePara()">{{'label.adicionar' | translate}}</button>
+							        	</div>
+									</div> <!-- /#top -->
+									
+									<div id="list" class="row">
+									 
+										<div class="table-responsive col-md-12" style="margin-top:8px;">
+									        <table class="table table-striped" cellspacing="0" cellpadding="0">
+									            <thead>
+									                <tr>
+									                    <th width="180">{{'label.registroA' | translate}}</th>
+									                    <th width="180">{{'label.registroB' | translate}}</th>
+									                    <th>{{'label.ultimaatualizacao' | translate}}</th>
+									                    <th width="62"></th>      
+									                 </tr>
+									            </thead>
+									            <tbody>
+									                <tr ng-repeat="itemGrid in item.registrosDePara">
+									                    <td>{{itemGrid.registroDe.codigo}} - {{itemGrid.registroDe.descricao}}</td>
+									                    <td>{{itemGrid.registroPara.codigo}} - {{itemGrid.registroPara.descricao}}</td>
+									                    <td>
+									                    	<span ng-show="itemGrid.id>0">{{(itemGrid.dataAlteracao!=null ? itemGrid.dataAlteracao : itemGrid.dataInclusao) | date:'dd-MM-yy HH:mm:ss'}}&nbsp;&nbsp;|&nbsp;&nbsp;{{(itemGrid.usuarioAlteracao!=null ? itemGrid.usuarioAlteracao.codigo : itemGrid.usuarioInclusao.codigo)}}</span>
+									                    	<span ng-show="itemGrid.id<0">-</span>
+									                    </td>
+									                    <td class="actions">
+									                        <!-- Controle de Exclusão -->
+													       	<a class="btn btn-grid-control btn-xs" ng-class="itemGrid.id<0 ? 'novoRegistro' : ''" href="javascript:void(0)" ng-click="removerRegistroDePara(itemGrid)">{{'label.remover' | translate}}</a>
+									                    </td>
+									                </tr> 
+									            </tbody>
+									         </table>
+									     </div> 
+									 
+									</div>    
+							
+							   	</div>	
+							   
+							   	<div id="tabPermissoesAcesso" class="tab-pane fade" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:16px; height:360px; overflow-y:scroll;">
+							   		
+									<div id="top" class="row">
+										<div class="col-md-6" style="margin-top:8px;">
+									        <input type="checkbox" name="ckAcessoTotal" id="ckAcessoTotal" ng-model="item.liberarAcesso" /><label for="ckAcessoTotal">&nbsp;&nbsp;{{'label.delegaracessoparausuarios' | translate}}</label>
+								        </div>
+									    <div class="col-md-6 right" style="margin-top:-16px; text-align:right;">
+									        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" data-toggle="modal" data-target="#delegar-acesso-modal">{{'label.adicionar' | translate}}</a>
+									    </div>
+									</div> <!-- /#top -->
+									
+									<div id="list" class="row">
+							 
+									   <div class="table-responsive col-md-12" style="margin-top:8px;">
+									        <table class="table table-striped" cellspacing="0" cellpadding="0">
+									            <thead>
+									                <tr>
+									                    <th width="138">{{'label.usuario' | translate}}</th>
+									                    <th>{{'label.nome' | translate}}</th>
+									                    <th width="254">{{'label.ultimaatualizacao' | translate}}</th>
+									                    <th width="62"></th>      
+									                 </tr>
+									            </thead>
+									            <tbody>
+									                <tr ng-repeat="itemGrid in item.acessosDelegados" style="vertical-align:middle;">
+									                    <td>{{itemGrid.usuario.codigo}}</td>
+									                    <td>{{itemGrid.usuario.nome}}</td>
+									                    <td style="padding-top:13px;">
+									                    	<span ng-show="itemGrid.id>0">{{(itemGrid.dataAlteracao!=null ? itemGrid.dataAlteracao : itemGrid.dataInclusao) | date:'dd-MM-yy HH:mm:ss'}}&nbsp;&nbsp;|&nbsp;&nbsp;{{(itemGrid.usuarioAlteracao!=null ? itemGrid.usuarioAlteracao.codigo : itemGrid.usuarioInclusao.codigo)}}</span>
+									                    	<span ng-show="itemGrid.id<0">-</span>
+									                    </td>
+									                    <td class="actions">
+									                        <a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerAcessoDelegado(itemGrid)">{{'label.remover' | translate}}</a>
+									                    </td>
+									                </tr> 
+									            </tbody>
+									         </table>
+									 
+									     </div>
+									     
+									 </div> <!-- /#list -->
+			
+			       	  			</div>
+			       	  		</div>
+						         	   
+			       	   </div>
+			       	   	   
+	            	</div>
+	            </div>
+	            
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		    			</div>         
+		    			<div class="col-md-8">
+			            	<span style="color:#ff0000; font-size:10pt; margin-left:-30px;" ng-show="msgValidacaoCadastro">{{msgValidacaoCadastro}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.gravar' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaCadastroModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	           </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="fecharJanelaDeleteModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">{{'label.excluirdepara' | translate}}</h4>
+            </div>
+            <div class="modal-body">{{'label.confirmacaoexclusao' | translate}}</div>
+            <div class="modal-footer">
+                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="excluir()">{{'label.sim' | translate}}</button>
+                <button type="button" class="btn btn-default" ng-click="fecharJanelaDeleteModal()">{{'label.nao' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delegar Acesso -->
+<div class="modal fade" id="delegar-acesso-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:40px;">
+    <div class="modal-dialog" role="document" style="width:440px;">
+        <div class="modal-content">
+            <form name="form" ng-submit="concluirDelegarAcesso()" role="form">
+	            <div class="modal-header">
+	            	<button type="button" class="close" ng-click="fecharJanelaDelegarAcessoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel">{{'label.usuarios' | translate}}</h4>
+	            </div>
+	            <div class="modal-body" style="height:340px; overflow-y:auto;">
+	            		
+           	         <input name="filtroUsuario" ng-model="filtroUsuarioValor" class="form-control app-field" id="search" type="text" placeholder="{{'label.filtrarusuarios' | translate}}">
+			         
+	             	 <table class="table table-striped" cellspacing="0" cellpadding="0" style="margin-top:4px;">
+			            <thead>
+			                <tr>
+			                    <th width="140">{{'label.usuario' | translate}}</th>
+			                    <th>{{'label.nome' | translate}}</th>
+			                    <th width="30" align="center"><input type="checkbox" name="ckDelegarAcessoSelTodos" ng-model="flagSelTodosDelegarAcesso" ng-click="selecionarTodosDelegarAcesso()"/></th>
+			                 </tr>
+			            </thead>
+			            <tbody>
+			                <tr ng-repeat="data in usuariosPendentes | filter:filterUsuario">
+			                    <td>{{data.codigo}}</td>
+			                    <td>{{data.nome}}</td>
+			                    <td class="actions" align="center">
+			                        <input type="checkbox" ng-model="data.selecionado"/>					                 
+			                    </td>
+			                </tr> 
+			            </tbody>
+			         </table>		
+	       	   	</div>
+	            <div class="modal-footer">
+	            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+	                <button type="button" class="btn btn-default" ng-click="fecharJanelaDelegarAcessoModal()">{{'label.cancelar' | translate}}</button>
+	            </div>
+	           </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Upload Arquivo Importação -->
+<div class="modal fade" id="import-arquivo-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:100px;">
+    <div class="modal-dialog" role="document" style="width:380px;">
+        <div class="modal-content">
+            <form name="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaImportacaoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel">{{'label.importararquivo' | translate}}</h4>
+	            </div>
+	            <div class="modal-body" style="height:120px;">
+	             	<div class="row" style="text-align:center; margin-top:10px;">
+	           			<label class="btn btn-default" for="my-file-selector">
+						    <input id="my-file-selector" type="file" accept=".csv" files-input ng-model="fileArray" style="display:none;" onchange="$('#upload-file-info').html($(this).val()); angular.element(this).scope().validarArquivo(this);"" required>
+						    {{'label.selecionararquivocsv' | translate}}
+						</label>
+					</div>
+					<div class="row" style="text-align:center; margin-top:15px;">
+						<span style="font-weight:bold;" ng-show="fileSelected==false && fileValid==false"><i>{{'label.nenhumarquivoselecionado' | translate}}</i></span>
+						<span id="upload-file-info" style="font-weight:bold;" ng-show="fileSelected==true && fileValid==true"></span>
+						<span style="font-weight:bold; color:#ff0000; ng-show="fileSelected==true && fileValid==false">{{msgValidacaoArquivo}}</span>						
+					</div>
+				</div>
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="text-align:left;">
+		            		<button type="button" class="btn btn-default" ng-click="downloadTemplateCSV()">{{'label.baixartemplateimportacao' | translate}}</button>
+		    			</div>         
+		    			<div class="col-md-8">
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="importarArquivo()" ng-disabled="!fileSelected">{{'label.importar' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaImportacaoModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	        </form>
+	    </div>
+    </div>
+</div>
+

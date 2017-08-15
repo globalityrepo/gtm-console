@@ -1,0 +1,220 @@
+<div id="top" class="row" ng-init="init()">
+    <div class="col-md-8">
+        <h2>{{'label.usuario' | translate}}</h2>
+    </div>
+ 
+    <div class="col-md-3">
+        <form name="formFiltro" ng-submit="aplicarFiltro()">
+	        <div class="input-group h2">
+	       	    <input name="filtro" ng-model="filtro" class="form-control" id="search" type="text" placeholder="{{'label.pesquisaritens' | translate}}">
+	            <span class="input-group-btn">
+	                <button type="submit" ng-class="'btn btn-' + config.skin">
+	                    <span class="glyphicon glyphicon-search"></span>
+	                </button>
+	            </span>
+	            <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	        </div>
+	    </form>
+    </div>
+ 
+    <div class="col-md-1">
+        <!-- Controle Habilitado -->
+        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" ng-click="acionarInclusao()" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_INCLUIR)">{{'label.incluir' | translate}}</a>
+    </div>
+</div> <!-- /#top -->
+
+<div id="list" class="row" style="margin-top:21px;">
+ 
+    <div class="table-responsive col-md-12">
+        <table class="table table-striped" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th width="180">{{'label.codigoacesso' | translate}}</th>
+                    <th>{{'label.nome' | translate}}</th>
+                    <th width="280">{{'label.email' | translate}}</th>
+                    <th width="170">{{'label.perfil' | translate}}</th>
+                    <th width="120">{{'label.bloqueado?' | translate}}</th>
+                    <th width="126" class="actions">{{'label.acoes' | translate}}</th>
+                 </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="itemGrid in itens">
+                    <td>{{itemGrid.codigo}}</td>
+                    <td>{{itemGrid.nome}}</td>
+                    <td>{{itemGrid.email}}</td>
+                    <td>{{itemGrid.perfil.nome}}</td>
+                    <td>{{itemGrid.bloqueado ? ('label.sim' | translate) : ('label.nao' | translate)}}</td>
+                    <td class="actions">
+                        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_ALTERAR)" ng-click="acionarAlteracao(itemGrid)">{{'label.alterar' | translate}}</a>&nbsp;
+				       	<a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_EXCLUIR) || itemGrid.hasRestricaoExclusao" ng-click="acionarExclusao(itemGrid)">{{'label.excluir' | translate}}</a>
+                    </td>
+                </tr> 
+            </tbody>
+         </table>
+ 
+     </div>
+ </div> <!-- /#list -->
+
+ <div id="bottom" class="row">
+    <div class="col-md-4">
+    	
+    </div>
+    <div class="col-md-4">
+    	<ul class="pagination">
+        	<li ng-class="currentPage==1 ? 'disabled' : ''"><a href="javascript:void(0)" ng-click="currentPage==1 ? void(0) : abrirPagina(currentPage-1)">&lt; {{'label.anterior' | translate}}</a></li>
+            <li ng-class="currentPage==$index+1 ? 'disabled' : ''" ng-repeat="i in getNumber(queryPages) track by $index"><a href="javascript:void(0)" ng-click="currentPage==$index+1 ? void(0) : abrirPagina($index+1)">{{$index+1}}</a></li>
+            <li ng-class="currentPage>=queryPages ? 'disabled' : 'next'"><a href="javascript:void(0)" ng-click="currentPage>=queryPages ? void(0) : abrirPagina(currentPage+1)" rel="next">{{'label.proximo' | translate}} &gt;</a></li>
+        </ul><!-- /.pagination -->
+    </div>
+    <div class="col-md-4" style="text-align:right; margin-top:26px;">
+    	<label class="paginacao-legenda" ng-show="querySize&gt;0">{{'label.exibindoregistros' | translate}} {{numFirstReg}}-{{numLastReg}} {{'label.de' | translate}} {{querySize}}</label>
+    </div>
+</div> <!-- /#bottom -->
+
+<!-- Modal -->
+<div class="modal fade" id="cadastro-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document" style="width:900px;">
+        <div class="modal-content">
+            <form name="form" ng-submit="!item.id ? incluir() : alterar()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaCadastroModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!item.id">{{'label.incluirusuario' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="item.id">{{'label.alterarusuario' | translate}}</h4>
+	            </div>
+	            <div class="modal-body">
+	                
+	               <div class="row">
+		               <div class="col-md-4">
+			               <div class="form-group" ng-class="{ 'has-error': form.txCodigo.$dirty && form.txCodigo.$error.required }">
+				               <label for="txCodigo">{{'label.codigoacesso' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <input type="text" name="txCodigo" id="txCodigo" ng-model="item.codigo" maxlength="30" class="form-control app-field" required/>
+				           </div>
+				               
+				           <div class="form-group" ng-class="{ 'has-error': form.txNome.$dirty && form.txNome.$error.required }">
+				               <label for="txNome">{{'label.nome' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <input type="text" name="txNome" id="txNome" ng-model="item.nome" maxlength="64" class="form-control app-field" required/>
+				           </div>
+				           
+				           <div class="form-group" ng-class="{ 'has-error': form.txEmail.$dirty && form.txEmail.$error.required }">
+				               <label for="txEmail">{{'label.email' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <input type="text" name="txEmail" id="txEmail" ng-model="item.email" maxlength="80" class="form-control app-field" required/>
+				           </div>
+				           
+				           <div class="form-group" ng-class="{ 'has-error': form.cbPerfil.$dirty && form.cbPerfil.$error.required }">
+				               <label for="cbPerfil">{{'label.perfil' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <select name="cbPerfil" id="cbPerfil" ng-model="item.perfil.id" ng-options="opt.id as opt.nome for opt in perfis" class="form-control app-field" required>
+				               		<option value="">{{'label.comboboxpadrao' | translate}}</option>
+				               </select>
+				           </div>
+				           
+				           <div class="form-group" style="margin-top:26px;">
+				           		<input type="checkbox" name="ckAdmDePara" id="ckAdmDePara" ng-model="item.admDePara"  /><label for="ckAdmDePara">&nbsp;&nbsp;{{'label.administradorDePara' | translate}}</label>
+				           </div>
+				           
+				           <div class="form-group" style="margin-top:10px;" ng-show="item.id">
+				           		<input type="checkbox" name="ckBloqueado" id="ckBloqueado" ng-model="item.bloqueado"  /><label for="ckBloqueado">&nbsp;&nbsp;{{'label.bloqueado' | translate}}</label>
+				           </div>
+				           
+			       	   </div>
+			       	   <div class="col-md-8">
+			       	   		<fieldset  class="well" style="height:380px;">
+    							<legend class="well-legend">{{'label.grupos' | translate}}&nbsp;&nbsp;<a ng-class="'btn btn-' + config.skin + ' btn-xs'"  href="javascript:void(0)" data-toggle="modal" data-target="#add-grupo-modal">{{'label.adicionar' | translate}}</a></legend>
+    							<div class="table-responsive col-md-12" style="padding:4px;">
+							        <table class="table table-striped" cellspacing="0" cellpadding="0">
+							            <thead>
+							                <tr>
+							                    <th width="150">{{'label.codigo' | translate}}</th>
+							                    <th>{{'label.descricao' | translate}}</th>
+							                    <th width="80"></th>
+							                 </tr>
+							            </thead>
+							            <tbody>
+							                <tr ng-repeat="itemSubGrid in item.grupos">
+							                    <td>{{itemSubGrid.codigo}}</td>
+							                    <td>{{itemSubGrid.descricao}}</td>
+							                    <td class="actions">
+							                        <a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerGrupoUsuario(itemSubGrid)">{{'label.remover' | translate}}</a>					                 
+							                    </td>
+							                </tr> 
+							            </tbody>
+							         </table>
+							 
+							     </div>	   
+							 </fieldset>    	         	   
+			       	   </div>
+			       	   	    
+			       </div>
+		                   
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		    			</div>      
+		    			<div class="col-md-8">
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.gravar' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaCadastroModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	        </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="fecharJanelaDeleteModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">{{'label.excluirusuario' | translate}}</h4>
+            </div>
+            <div class="modal-body">{{'label.confirmacaoexclusao' | translate}}</div>
+            <div class="modal-footer">
+                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="excluir()">{{'label.sim' | translate}}</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default" ng-click="fecharJanelaDeleteModal()">{{'label.nao' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adição Transação Grupo -->
+<div class="modal fade" id="add-grupo-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:40px;">
+    <div class="modal-dialog" role="document" style="width:500px;">
+        <div class="modal-content">
+            <form name="form" ng-submit="concluirAdicaoGrupo()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaAddGrupoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel">{{'label.grupos' | translate}}</h4>
+	            </div>
+	            <div class="modal-body" style="height:350px;">
+	             	 <table class="table table-striped" cellspacing="0" cellpadding="0">
+			            <thead>
+			                <tr>
+			                    <th width="120">{{'label.codigo' | translate}}</th>
+			                    <th>{{'label.descricao' | translate}}</th>
+			                    <th width="30" align="center"><input type="checkbox" name="ckGrupoSelTodos" ng-model="flagSelTodosAddGrupo" ng-click="selecionarTodosAddGrupo()"/></th>
+			                 </tr>
+			            </thead>
+			            <tbody>
+			                <tr ng-repeat="itemAddGrid in gruposPendentes">
+			                    <td>{{itemAddGrid.codigo}}</td>
+			                    <td>{{itemAddGrid.descricao}}</td>
+			                    <td class="actions" align="center">
+			                        <input type="checkbox" ng-model="itemAddGrid.selecionado"/>					                 
+			                    </td>
+			                </tr> 
+			            </tbody>
+			         </table>		
+	       	   	</div>
+	            <div class="modal-footer">
+	            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+	                <button type="button" class="btn btn-default" ng-click="fecharJanelaAddGrupoModal()">{{'label.cancelar' | translate}}</button>
+	            </div>
+	           </form>
+        </div>
+    </div>
+</div>

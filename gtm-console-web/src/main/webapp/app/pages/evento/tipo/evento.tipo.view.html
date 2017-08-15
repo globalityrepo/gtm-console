@@ -1,0 +1,123 @@
+<div id="top" class="row" ng-init="init()">
+    <div class="col-md-8">
+        <h2>{{'label.tipoevento' | translate}}</h2>
+    </div>
+ 
+    <div class="col-md-3">
+        <form name="formFiltro" ng-submit="aplicarFiltro()">
+	        <div class="input-group h2">
+	       	    <input name="filtro" ng-model="filtro" class="form-control" id="search" type="text" placeholder="{{'label.pesquisaritens' | translate}}">
+	            <span class="input-group-btn">
+	                <button type="submit" ng-class="'btn btn-' + config.skin">
+	                    <span class="glyphicon glyphicon-search"></span>
+	                </button>
+	            </span>
+	            <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	        </div>
+	    </form>
+    </div>
+ 
+    <div class="col-md-1">
+    	<!-- Controle Habilitado -->
+        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" ng-click="acionarInclusao()" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_INCLUIR)">{{'label.incluir' | translate}}</a>
+    </div>
+</div> <!-- /#top -->
+
+<div id="list" class="row" style="margin-top:21px;">
+ 
+    <div class="table-responsive col-md-12">
+        <table class="table table-striped" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th width="150">{{'label.codigo' | translate}}</th>
+                    <th>{{'label.descricao' | translate}}</th>
+                    <th width="126" class="actions">{{'label.acoes' | translate}}</th>
+                 </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="itemGrid in itens">
+                    <td>{{itemGrid.id}}</td>
+                    <td>{{itemGrid.descricao}}</td>
+                    <td class="actions">
+                        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_ALTERAR)" ng-click="acionarAlteracao(itemGrid)">{{'label.alterar' | translate}}</a>&nbsp;
+				       	<a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_EXCLUIR)" ng-click="acionarExclusao(itemGrid)">{{'label.excluir' | translate}}</a>
+                    </td>
+                </tr> 
+            </tbody>
+         </table>
+ 
+     </div>
+ </div> <!-- /#list -->
+
+ <div id="bottom" class="row">
+    <div class="col-md-4">
+    	
+    </div>
+    <div class="col-md-4">
+    	<ul class="pagination">
+        	<li ng-class="currentPage==1 ? 'disabled' : ''"><a href="javascript:void(0)" ng-click="currentPage==1 ? void(0) : abrirPagina(currentPage-1)">&lt; {{'label.anterior' | translate}}</a></li>
+            <li ng-class="currentPage==$index+1 ? 'disabled' : ''" ng-repeat="i in getNumber(queryPages) track by $index"><a href="javascript:void(0)" ng-click="currentPage==$index+1 ? void(0) : abrirPagina($index+1)">{{$index+1}}</a></li>
+            <li ng-class="currentPage>=queryPages ? 'disabled' : 'next'"><a href="javascript:void(0)" ng-click="currentPage>=queryPages ? void(0) : abrirPagina(currentPage+1)" rel="next">{{'label.proximo' | translate}} &gt;</a></li>
+        </ul><!-- /.pagination -->
+    </div>
+    <div class="col-md-4" style="text-align:right; margin-top:26px;">
+    	<label class="paginacao-legenda" ng-show="querySize&gt;0">{{'label.exibindoregistros' | translate}} {{numFirstReg}}-{{numLastReg}} {{'label.de' | translate}} {{querySize}}</label>
+    </div>
+</div> <!-- /#bottom -->
+
+<!-- Modal -->
+<div class="modal fade" id="cadastro-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form name="form" ng-submit="modo==0 ? incluir() : alterar()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaCadastroModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="modo==0">{{'label.incluirtipoevento' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="modo==1">{{'label.alterartipoevento' | translate}}</h4>
+	            </div>
+	            <div class="modal-body">
+	                
+	               <div class="form-group" ng-class="{ 'has-error': form.txCodigo.$dirty && form.txCodigo.$error.required }">
+		               <label for="txCodigo">{{'label.codigo' | translate}}</label><label class="labelObrigatorio">*</label>
+		               <input type="text" name="txCodigo" id="txCodigo" ng-model="item.id" maxlength="4" class="form-control app-field" ng-disabled="modo==1" required/>
+		           </div>
+		               
+		           <div class="form-group" ng-class="{ 'has-error': form.txDescricao.$dirty && form.txDescricao.$error.required }">
+		               <label for="txDescricao">{{'label.descricao' | translate}}</label><label class="labelObrigatorio">*</label>
+		               <textarea name="txDescricao" id="txDescricao	" ng-model="item.descricao" maxlength="512" class="form-control app-field" required></textarea>
+				   </div>
+	                       
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		    			</div>       
+		    			<div class="col-md-8">
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.gravar' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaCadastroModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	         </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="fecharJanelaDeleteModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">{{'label.excluirtipoevento' | translate}}</h4>
+            </div>
+            <div class="modal-body">{{'label.confirmacaoexclusao' | translate}}</div>
+            <div class="modal-footer">
+                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="excluir()">{{'label.sim' | translate}}</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default" ng-click="fecharJanelaDeleteModal()">{{'label.nao' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

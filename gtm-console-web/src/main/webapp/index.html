@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html ng-app="stockModule" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>GTM - Global Transaction Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--css-->
+    <link rel="stylesheet" href="content/bootstrap.min.css" />
+    <link rel="stylesheet" href="content/sticky-footer-navbar.css" />
+    <link rel="stylesheet" href="content/toastr.css" />
+    <link rel="stylesheet" href="content/datepicker.css" />
+	<link rel="stylesheet" href="content/treeGrid.css" />
+	<link rel="stylesheet" href="content/app.css" />
+	<link rel="stylesheet" href="content/skin.css" />
+	
+	<style>
+		.bg-default{
+			background-image: url(../images/bg-default.jpg); no-repeat center center fixed; background-size: cover;  background-repeat:   no-repeat; background-position: center center; width:100%; height:100vh;
+		}
+	</style>
+	
+    <!--jquery-->
+    <script src="Scripts/jquery-2.1.1.js"></script>
+
+    <!--bootstrap-->
+    <script src="Scripts/bootstrap.min.js"></script>
+
+    <!--toaster-->
+    <script src="Scripts/toastr.js"></script>
+    
+    <!--datepicker-->
+    <script src="Scripts/bootstrap-datepicker.js"></script>
+    
+    <!--gráficos-->
+    <script src="Scripts/Chart.min.js"></script>
+
+    <!--angular-->
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <script src="Scripts/AngularUI/ui-router.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="Scripts/angular-cookies.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="Scripts/angular-translate.min.js"></script>
+    <script src="Scripts/angular-file-upload.min.js"></script>
+
+	<!--Directives-->
+	<script src="app/directives/tree-grid-directive/tree-grid-directive.js"></script>
+
+    <!--======================
+           my scripts
+        ====================== -->
+    <!--module and common-->
+    <script src="app/stock.module.js"></script>
+    <script src="app/notifications.factory.js"></script>
+    <script src="app/modal-window.factory.js"></script>
+    <script src="app/reactive-factory.js"></script>
+    <script src="app/messages.translate.js"></script>
+    
+    <!--Controllers-->
+    <script src="app/pages/home/home.controller.js"></script>
+    <script src="app/pages/dashboard/dashboard.controller.js"></script>
+    <script src="app/pages/login/login.controller.js"></script>
+    <script src="app/pages/geral/esquecisenha/esquecisenha.controller.js"></script>
+    <script src="app/pages/geral/trocasenha/trocasenha.controller.js"></script>
+    <script src="app/pages/geral/autorizacao/autorizacao.controller.js"></script>
+    <script src="app/pages/usuario/usuario.controller.js"></script>
+    <script src="app/pages/aplicacao/aplicacao.controller.js"></script>
+    <script src="app/pages/divisao/divisao.controller.js"></script>
+    <script src="app/pages/evento/tipo/evento.tipo.controller.js"></script>
+    <script src="app/pages/evento/nivel/evento.nivel.controller.js"></script>
+    <script src="app/pages/transacao/transacao.controller.js"></script>
+    <script src="app/pages/grupo/grupo.controller.js"></script>
+    <script src="app/pages/transacao/passo/evento.nivel.controller.js"></script>
+    <script src="app/pages/geral/configuracao/configuracao.controller.js"></script>
+    <script src="app/pages/entidade/entidade.controller.js"></script>
+    <script src="app/pages/depara/depara.controller.js"></script>
+        
+    <!--Services-->
+    <script src="app/services/autenticacao.service.js"></script>
+    <script src="app/services/autorizacao.service.js"></script>
+    <script src="app/services/esquecisenha.service.js"></script>
+    <script src="app/services/trocasenha.service.js"></script>
+    <script src="app/services/usuario.service.js"></script>
+    <script src="app/services/RESTfulResource.service.js"></script>
+    <script src="app/services/transacao.service.js"></script>
+    <script src="app/services/entidade.service.js"></script>
+    <script src="app/services/depara.service.js"></script>
+    <script src="app/services/common.service.js"></script>
+    <script src="app/services/dashboard.service.js"></script>
+    <script src="app/services/configuracao.service.js"></script>
+    
+    <script language="javascript">	
+    	
+    	function somenteNumero(e){
+    		 var tecla=(window.event)?event.keyCode:e.which;
+			 if((tecla>47 && tecla<58)) return true;
+			 else{
+			 if (tecla==8 || tecla==0) return true;
+			 else  return false;
+			 }
+		}
+    	 
+	</script>
+    
+</head>
+
+<!--Angular APP container (ng-app)-->
+<body ng-class="aplicarBackground ? 'bg-default' : ''">
+    <!--Header-->
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" ng-controller="AutorizacaoController as autorizacaoCtrl">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+               <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/#home" class="navbar-brand">
+                <img ng-src="{{'images/logo-gtm-pequeno-' + config.skin + '.png'}}" style="margin-top:-6px;"/>
+            </a>
+            <ul class="nav navbar-nav navbar-right" ng-show="globals.currentUser.user" style="margin-left:20px;">
+	          <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CON_DASHBOARD)"><a href="/#dashboard"><b>{{'label.asia' | translate}}</b> | {{'label.dashboard' | translate}}</a></li>	
+	          <li class="dropdown" ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_DIVISAO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_APLICACAO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_TIPO_EVENTO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_NIVEL_EVENTO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_ACAO_TRANSACAO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_PRINC_TRANSACAO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_GRUPO_TRANSACAO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_PARAM_TRANSACAO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_PRINC_PASSO_TRANS) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_NIVEL_PASSO_TRANS)">
+		        <a class="dropdown-toggle" href="javascript:void(0)"><b>{{'label.americas' | translate}}</b> | {{'label.transacoes' | translate}}&nbsp;<span class="caret"></span></a>
+		        <ul class="dropdown-menu">
+	        	  <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_APLICACAO)"><a href="#/aplicacao">{{'label.aplicacao' | translate}}</a></li> 
+		          <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_DIVISAO)"><a href="#/divisao">{{'label.divisao' | translate}}</a></li> 
+		          <li class="dropdown-submenu" ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_TIPO_EVENTO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_NIVEL_EVENTO)">
+		            <a href="javascript:void(0)">{{'label.evento' | translate}}</a>
+		            <ul class="dropdown-menu">
+		              <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_TIPO_EVENTO)"><a href="#/eventotipo">{{'label.tipo' | translate}}</a></li>
+		              <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_NIVEL_EVENTO)"><a href="#/eventonivel">{{'label.nivel' | translate}}</a></li>
+		            </ul>
+		          </li>
+		          <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_GRUPO_TRANSACAO)"><a href="#/grupo">{{'label.grupo' | translate}}</a></li>
+		          <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_CAD_PRINC_TRANSACAO)"><a href="#/transacao">{{'label.principal' | translate}}</a></li>
+		        </ul>
+		      </li>	
+		      <li class="dropdown">
+		        <a class="dropdown-toggle" href="javascript:void(0)"><b>{{'label.europa' | translate}}</b> | {{'label.crossreference' | translate}}&nbsp;<span class="caret"></span></a>
+		        <ul class="dropdown-menu">
+		          <li><a href="#/aplicacao">{{'label.aplicacao' | translate}}</a></li>
+	        	  <li><a href="#/entidade">{{'label.entidade' | translate}}</a></li>
+	        	  <li><a href="#/depara">{{'label.principal' | translate}}</a></li>
+		        </ul>
+		      </li>				      
+		    </ul>
+		  </div>	
+          <div class="navbar-header navbar-right" ng-show="globals.currentUser.user">
+	        <ul class="nav navbar-nav">
+		      <li class="dropdown" ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_ADM_USUARIO) || AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_ADM_CONFIGURACAO)">
+		        <a class="dropdown-toggle" href="javascript:void(0)">{{'label.administracao' | translate}}&nbsp;<span class="caret"></span></a>
+		        <ul class="dropdown-menu">
+		          <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_ADM_USUARIO)"><a href="#/usuario">{{'label.usuario' | translate}}</a></li> 
+		          <li ng-show="AUTORIZADOR.isRecursoPermitido(AUTORIZADOR.REC_ADM_CONFIGURACAO)"><a href="javascript:void(0)" data-toggle="modal" data-target="#configuracao-modal">{{'label.configuracoesgerais' | translate}}</a></li>
+		        </ul>
+		      </li>	
+		      <li class="dropdown">
+		        <a class="dropdown-toggle" href="#"><img ng-src="{{'images/ico-user-' + config.skin + '.png'}}" style="margin-top:-2px;"/>&nbsp;&nbsp;{{globals.currentUser.user.nome}}&nbsp;<span class="caret"></span></a>
+		        <ul class="dropdown-menu">
+		          <li><a href="javascript:void(0)" data-toggle="modal" data-target="#trocarsenha-modal">{{'label.trocarsenha' | translate}}</a></li> 
+		          <li><a href="#/login">{{'label.sair' | translate}}</a></li> 
+		        </ul>
+		      </li>	
+		      <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		   </ul>
+		  </div>    
+    </nav>
+    
+    <div class="container-fluid fill-height">
+		<div class="row">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-md-12">
+	                    <div ui-view="main"></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>	
+	</div>
+	
+	<!-- Modal Trocar Senha -->
+	<div class="modal fade" id="trocarsenha-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" ng-controller="TrocaSenhaController">
+	    <div class="modal-dialog" role="document" style="width:320px;">
+	        <div class="modal-content">
+	            <form name="form" ng-submit="concluir()" role="form">
+		            <div class="modal-header">
+		                <button type="button" class="close" ng-click="fecharJanelaModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+		                <h4 class="modal-title" id="modalLabel">{{'label.trocarsenha' | translate}}</h4>
+		            </div>
+		            <div class="modal-body">
+		               <div class="form-group" ng-class="{ 'has-error': form.txSenhaAtual.$dirty && form.txSenhaAtual.$error.required }">
+			               <label for="txSenhaAtual">{{'label.informarsenhaatual' | translate}}</label><label class="labelObrigatorio">*</label>
+			               <input type="password" name="txSenhaAtual" id="txSenhaAtual" ng-model="item.senhaAtual" maxlength="10" class="form-control" required />
+			           </div>
+			           
+			           <div class="form-group" ng-class="{ 'has-error': form.txSenhaNova.$dirty && form.txSenhaNova.$error.required }">
+			               <label for="txSenhaNova">{{'label.informarnovasenha' | translate}}</label><label class="labelObrigatorio">*</label>
+			               <input type="password" name="txSenhaNova" id="txSenhaNova" ng-model="item.senhaNova" maxlength="10" class="form-control" required />
+			           </div>
+			           
+			           <div class="form-group" ng-class="{ 'has-error': (form.txSenhaNovaConfirmacao.$dirty && form.txSenhaNovaConfirmacao.$error.required) || (item.senhaNovaConfirmacao && item.senhaNova != item.senhaNovaConfirmacao)}">
+			               <label for="txSenhaNova">{{'label.confirmarnovasenha' | translate}}</label><label class="labelObrigatorio">*</label>
+			               <input type="password" name="txSenhaNovaConfirmacao" id="txSenhaNovaConfirmacao" ng-model="item.senhaNovaConfirmacao" maxlength="10" class="form-control" required />
+			               <span ng-show="item.senhaNovaConfirmacao && item.senhaNova != item.senhaNovaConfirmacao" class="help-block">{{'label.confirmacaosenhaincorreta' | translate}}</span>
+			           </div>
+		                       
+		            </div>
+		            <div class="modal-footer">
+		            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+		                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+		                <button type="button" class="btn btn-default" ng-click="fecharJanelaModal()">{{'label.cancelar' | translate}}</button>
+		            </div>
+		           </form>
+	        </div>
+	    </div>
+	</div>
+	
+	<!-- Modal Esqueci Senha -->
+	<div class="modal fade" id="esquecisenha-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" ng-controller="EsqueciSenhaController">
+	    <div class="modal-dialog" role="document" style="width:320px;">
+	        <div class="modal-content">
+	            <form name="form" ng-submit="concluir()" role="form">
+		            <div class="modal-header">
+		                <button type="button" class="close" ng-click="fecharJanelaModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+		                <h4 class="modal-title" id="modalLabel">{{'label.esqueciminhasenha' | translate}}</h4>
+		            </div>
+		            <div class="modal-body">
+		              
+		               <div class="form-group" ng-class="{ 'has-error': form.txSenhaAtual.$dirty && form.txSenhaAtual.$error.required }">
+			               <label for="txCodigoAcesso">{{'label.informeseuusuario' | translate}}</label>
+			               <input type="text" name="txCodigoAcesso" id="txCodigoAcesso" ng-model="item.login" maxlength="30" class="form-control" required />
+			           </div>
+			                 
+		            </div>
+		            <div class="modal-footer">
+		            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+		                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.solicitarnovasenha' | translate}}</button>&nbsp;&nbsp;
+		                <button type="button" class="btn btn-default" ng-click="fecharJanelaModal()">{{'label.cancelar' | translate}}</button>
+		            </div>
+		           </form>
+	        </div>
+	    </div>
+	</div>
+	
+	<!-- Modal Configuracoes Gerais -->
+	<div class="modal fade" id="configuracao-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" ng-controller="ConfiguracaoController">
+	    <div class="modal-dialog" role="document" style="width:380px;">
+	        <div class="modal-content">
+	            <form name="form" ng-submit="concluir()" role="form">
+		            <div class="modal-header">
+		                <button type="button" class="close" ng-click="fecharJanelaCadastroModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+		                <h4 class="modal-title" id="modalLabel">{{'label.configuracoesgerais' | translate}}</h4>
+		            </div>		         
+		            <div class="modal-body">
+		              	<div class="form-group" ng-class="{ 'has-error': form.cbIdioma.$dirty && form.cbIdioma.$error.required }">
+			               <label for="cbIdioma">{{'label.idioma' | translate}}</label>
+			               <select name="cbIdioma" name="cbIdioma" id="cbIdioma" ng-model="item.locale" class="form-control app-field" required>
+				               <option value="pt_BR">{{'label.portugues' | translate}}</option>
+				               <option value="es_ES">{{'label.espanhol' | translate}}</option>
+				               <option value="en_US">{{'label.ingles' | translate}}</option>
+			               </select>
+			           	</div>
+           				<div class="form-group" ng-class="{ 'has-error': form.cbSkin.$dirty && form.cbSkin.$error.required }">
+		               		<label for="cbSkin">Skin</label>
+	               			<select name="cbSkin" name="cbSkin" id="cbSkin" ng-model="item.skin" class="form-control app-field" required>
+			               		<option value="AZUL">{{'label.azul' | translate}}</option>
+			               		<option value="VERDE">{{'label.verde' | translate}}</option>
+			               		<option value="VERMELHO">{{'label.vermelho' | translate}}</option>
+			           		</select>
+		           		</div>
+           				<div class="form-group">
+			               	<label for="txPathStorage">{{'label.pathstorage' | translate}}</label>
+			               	<input type="text" name="txPathStorage" id="txPathStorage" ng-model="item.pathStorage" maxlength="80" class="form-control app-field" />
+			           	</div>
+		            </div>
+		            <div class="modal-footer">
+		            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+		                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.gravar' | translate}}</button>&nbsp;&nbsp;
+		                <button type="button" class="btn btn-default" ng-click="fecharJanelaModal()">{{'label.cancelar' | translate}}</button>
+		            </div>
+		       </form>
+	        </div>
+	    </div>
+	</div>
+	
+<!-- 	<nav class="navbar navbar-default navbar-fixed-bottom" style="margin-bottom:-14px;"> -->
+<!-- 		<div class="nav navbar-nav navbar" style="padding-top:3px; margin-left:2px;"> -->
+<!--             &nbsp;&nbsp;<img ng-src="images/mod-asia-rodape.png" ng-show="globals.moduleLoaded==1"/><img ng-src="images/mod-americas-rodape.png" ng-show="globals.moduleLoaded==2"/> -->
+<!--         </div>	 -->
+<!-- 		<div class="nav navbar-nav navbar-right" style="padding-top:1px;"> -->
+<!--            <font size="1"><b>Desenvolvido por</b></font><img ng-src="images/logo-globality.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -->
+<!--         </div>		 -->
+<!-- 	</nav> -->
+	
+</body>
+
+
+<!--Angular scripts-->
+</html>

@@ -1,0 +1,291 @@
+<div id="top" class="row" ng-init="init()">
+    <div class="col-md-12">
+    	<div class="row">
+    		<div class="col-md-6">
+    			<div class="form-actions">
+	  				<h2>{{'label.dashboard' | translate}}
+	  					<input type="checkbox" name="ckAtualizacaoAutomatica" id="ckAtualizacaoAutomatica" ng-model="atualizacaoAutomatica" ng-click="tratarAtualizacaoAutomatica(!atualizacaoAutomatica)" style="margin-left:16px;" />
+	  					<label for="ckAtualizacaoAutomatica" style="font-weight:normal; font-size:14px; color:#444444;">&nbsp;{{'label.atualizacaoautomatica' | translate}}</label>
+	  				</h2>
+	  			</div>
+	  		</div>
+    	</div>
+    </div> 
+</div>
+
+<div id="filter" class="row" style="margin-top:0px; padding:0px;">
+	<div class="col-md-12" style="padding:0px;">
+		 <div class="col-md-4">
+	     	 <div style="margin-top:25px;">
+	       		<div class="form-actions">
+		            <button type="button" ng-class="'btn btn-' + config.skin" data-toggle="modal" data-target="#filter-transacao-modal">{{'label.opcoesfiltro' | translate}}</button>
+		            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		            <button type="button" ng-click="restaurar()" class="btn btn-default" ng-disabled="!hasFiltroChanged">{{'label.restaurar' | translate}}</button>
+        			&nbsp;&nbsp;
+        			<button type="button" ng-click="atualizar()" class="btn btn-default">{{'label.atualizar' | translate}}</button>
+        			&nbsp;
+		            <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+		        </div>
+        	</div>
+	     </div>
+	     <div class="col-md-4"></div>
+	     <div class="col-md-4" style="padding-top:14px; margin-left:4px; padding-right:0px; width:380px;">
+      		<div class="col-md-12" style="padding-top:14px; padding-left:82px; padding-right:0px;">
+     			<div class="col-md-8" style="padding-top:6px; width:200px; padding-left:8px; text-align:right;">
+       				{{'label.totalregistrosexibidos' | translate}}:
+       			</div>
+	       		<div class="col-md-4" style="width:74px; padding:0px;">
+		       	   <select name="cblimite" id="cblimite" ng-model="qtdeRegistros" ng-change="mudarQtdeRegistros()" class="form-control" style="width:74px;">
+		        		<option value="25" selected>25</option>
+		 				<option value="50">50</option>
+		 				<option value="100">100</option>
+		 				<option value="200">200</option>
+		           </select>
+	          	</div>
+         	</div>
+		</div>  
+	
+	</div>
+</div>
+
+<div id="content" class="row" style="margin-top:24px;">
+	<div class="col-md-12">
+		<tree-grid tree-data="mainTree.tree_data" is-filtro-dashboard="false" exibir-botao-view="true" exibir-botao-export="true" tree-control="mainTree.my_tree" col-tree-displayname="mainTree.expanding_displayName" col-data-displayname="mainTree.data_col_displayname" col-defs="mainTree.col_defs" expand-on="mainTree.expanding_property" on-select="mainTree.my_tree_handler(branch)" ver-item="verItemGrid(itemSelecionado)" exportar-item="exportarItemGrid(itemSelecionado)" expand-level="2" icon-leaf= ""></tree-grid>
+	</div>             
+</div>
+
+<!-- Modal Filtro Transações -->
+<div class="modal fade" id="filter-transacao-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document" style="width:1120px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="cancelarJanelaOpcoesFiltro()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">{{'label.opcoesfiltro' | translate}}</h4>
+            </div>
+            <div class="modal-body" style="height:474px; margin-top:-6px;">
+            	<div class="col-md-12">
+	           	 	 <div class="row" style="margin-left:-28px;">
+	         	 	 	<div class="col-md-2">
+		         			<div class="form-group">
+					            <label for="txDe">{{'label.datainicial' | translate}}</label>
+					            <div class="input-group">
+					        		<div class="input-group-addon">
+					         			<img ng-src="images/ico-datepicker.png"/>
+					        		</div>
+					        		<input class="form-control" id="txDe" name="txDe" placeholder="DD/MM/YYYY" type="text" ng-model="filtro.dataInicial" style="width:108px;"/>
+					       		</div>
+					        </div>
+	        	 		</div>
+	        	 		<div class="col-md-8" style="margin-left:-20px;">
+		         			<div class="form-group">
+					            <label for="txAte">{{'label.datafinal' | translate}}</label>
+					            <div class="input-group">
+					        		<div class="input-group-addon">
+					         			<img ng-src="images/ico-datepicker.png"/>
+					        		</div>
+					        		<input class="form-control" id="txAte" name="txAte" placeholder="DD/MM/YYYY" type="text" ng-model="filtro.dataFinal" style="width:108px;"/>
+					       		</div>
+					        </div>
+	        	 		</div>
+	         		</div>
+	         	</div>
+            	<div class="row" style="padding-left:16px; padding-right:16px; padding-top:50px;">
+            		<div class="col-md-2" style="width:200px;">
+            			<div class="row">
+            				<fieldset  class="well" style="height:370px;">
+			    				 <legend class="well-legend">{{'label.grupos' | translate}}</legend>
+				             	 <div class="row" style="padding-left:10px; padding-right:10px; padding-top:0px;">
+					             	 <div class="col-md-12" style="overflow-y: auto; height:310px;">
+					             	 	 <div class="row" style="padding-left:8px; padding-right:8px;">
+					             	 	 	<table class="table table-striped" cellspacing="0" cellpadding="0">
+									            <thead>
+									                <tr>
+									                    <th>{{'label.codigo' | translate}}</th>
+									                    <th width="30" align="center"><input type="checkbox" name="ckFiltroSelTodosGrupo" ng-model="flagSelTodosFiltroGrupo" ng-click="selecionarTodosFiltroGrupo()"/></th>
+									                 </tr>
+									            </thead>
+									            <tbody>
+									                <tr ng-repeat="opt in grupos">
+									                    <td>{{opt.codigo}}</td>
+									                    <td class="actions" align="center">
+									                        <input type="checkbox" ng-model="opt.selecionado" ng-click="opt.selecionado=!opt.selecionado; carregarTransacoesByGrupos(false)"/>					                 
+									                    </td>
+									                </tr> 
+									            </tbody>
+									         </table>		
+					             	 	 </div>
+					             	 </div>
+					             </div>
+					        </fieldset>
+            			</div>
+            		</div>
+            		<div class="col-md-8" style="width:680px;">
+            			<div class="row" style="padding-left:16px; padding-right:16px;">
+            				<fieldset  class="well" style="height:370px;">
+			    				<legend class="well-legend">{{'label.transacoes' | translate}}</legend>
+			             	  	<div class="row" style="padding-left:10px; padding-right:10px; padding-top:0px;">
+					             	 <div class="col-md-12" style="overflow-y: auto; height:310px;">
+					             	 	 <div class="row" style="padding-left:8px; padding-right:8px;">
+					             	 	 	<table class="table table-striped" cellspacing="0" cellpadding="0">
+									            <thead>
+									                <tr>
+									                    <th>{{'label.codigo' | translate}}</th>
+									                    <th width="120">{{'label.identificador' | translate}}</th>
+									                    <th width="130">{{'label.parametro' | translate}}</th>
+									                    <th width="120">{{'label.valor' | translate}}</th>
+									                    <th width="30" align="center"><input type="checkbox" name="ckFiltroSelTodosTransacao" ng-model="flagSelTodosFiltroTransacao" ng-click="selecionarTodosFiltroTransacao()"/></th>
+									                 </tr>
+									            </thead>
+									            <tbody>
+									                <tr ng-repeat="transacao in transacoes">
+									                    <td>{{transacao.codigo}}</td>
+									                    <td><input type="textbox" class="form-control" style="width:120px;" ng-model="transacao.idTransacaoInstancia" ng-disabled="!transacao.selecionado" /></td>
+									                    <td>
+									                    	<select class="form-control" style="width:130px;" ng-model="transacao.idParametro" ng-disabled="!transacao.selecionado || transacao.parametros.length==0" ng-options="opt.id as opt.nome for opt in transacao.parametros">
+								        						<option value=''>{{'label.comboboxpadrao' | translate}}</option>
+								        					</select>
+								        				</td>
+								        				<td><input type="textbox" class="form-control" style="width:120px;" ng-model="transacao.valorParametro" ng-disabled="!transacao.selecionado || !transacao.idParametro" /></td>
+									                    <td class="actions" align="center">
+									                        <input type="checkbox" ng-model="transacao.selecionado" ng-click="transacao.selecionado=!transacao.selecionado;"/>					                 
+									                    </td>
+									                </tr> 
+									            </tbody>
+									         </table>		
+					             	 	 </div>
+					             	 </div>
+					             </div>			             	  	
+					         </fieldset>
+            			</div>
+            		</div>
+            		<div class="col-md-2" style="width:206px;">
+            			<div class="row">
+            				<fieldset  class="well" style="height:370px;">
+			    				 <legend class="well-legend">{{'label.niveisevento' | translate}}</legend>
+				             	 <div class="row" style="padding-left:10px; padding-right:10px; padding-top:0px;">
+					             	 <div class="col-md-12" style="overflow-y: auto; height:310px;">
+					             	 	 <div class="row" style="padding-left:8px; padding-right:8px;">
+					             	 	 	<table class="table table-striped" cellspacing="0" cellpadding="0">
+									            <thead>
+									                <tr>
+									                    <th>{{'label.descricao' | translate}}</th>
+									                    <th width="30" align="center"><input type="checkbox" name="ckFiltroSelTodos" ng-model="flagSelTodosFiltroNivelEvento" ng-click="selecionarTodosFiltroNivelEvento()"/></th>
+									                 </tr>
+									            </thead>
+									            <tbody>
+									                <tr ng-repeat="opt in niveisEvento">
+									                    <td>{{opt.descricao}}</td>
+									                    <td class="actions" align="center">
+									                        <input type="checkbox" ng-model="opt.selecionado" ng-click="opt.selecionado=!opt.selecionado"/>					                 
+									                    </td>
+									                </tr> 
+									            </tbody>
+									         </table>		
+					             	 	 </div>
+					             	 </div>
+					             </div>
+					        </fieldset>
+            			</div>
+            		</div>
+            	</div>
+            		
+       	   	</div>
+            <div class="modal-footer">
+            	<div>
+            		<div class="col-md-1" style="padding:0px; text-align:left;">
+            			<button type="button" class="btn btn-default" ng-click="restaurarJanelaOpcoesFiltro()">{{'label.restaurar' | translate}}</button>
+            		</div>
+            		<div class="col-md-11" style="padding:0px;">
+            			<div class="form-actions">
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                &nbsp;
+			                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="filtrar()">{{'label.pesquisar' | translate}}</button>
+			                &nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="cancelarJanelaOpcoesFiltro()">{{'label.cancelar' | translate}}</button>
+			            </div>
+            		</div>	            	
+		        </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Visualizar Evento -->
+<div class="modal fade" id="view-evento-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:40px;">
+    <div class="modal-dialog" role="document" style="width:550px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="fecharJanelaVisualizarEventoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">{{'label.instanciadeevento' | translate}}</h4>
+            </div>
+            <div class="modal-body" style="height:354px;">
+            	            	
+            	<div class="row">
+	               <div class="col-md-7">
+		               <div class="form-group">
+			               <label>{{'label.identificador' | translate}}</label><p>
+			               <span>{{itemSelecionado.item.id}}</span>
+			           </div>
+		       	   </div>
+		       	   <div class="col-md-5">
+		               <div class="form-group">
+			               <label>{{'label.data' | translate}} / {{'label.hora' | translate}}</label><p>
+			               <span>{{itemSelecionado.dataHora}}</span>
+			           </div>
+		       	   </div>
+		       	</div>
+			       
+		       <div class="row">
+	               <div class="col-md-7">
+		               <div class="form-group">
+			               <label>Parent</label><p>
+			               <span ng-show="itemSelecionado.item.idEventoInstanciaPai">{{itemSelecionado.item.idEventoInstanciaPai}}</span>
+			               <span ng-show="!itemSelecionado.item.idEventoInstanciaPai">-</span>
+			           </div>
+		       	   </div>
+		       	   <div class="col-md-5">
+		               <div class="form-group">
+			               <label>{{'label.nivel' | translate}}</label><p>
+			               <span>{{itemSelecionado.item.descricaoEventoNivel}} ({{itemSelecionado.item.codigoEventoNivel}})</span>
+			           </div>
+		       	   </div>
+		       </div>
+		       
+		       <div class="row">
+	               <div class="col-md-12">
+		               <div class="form-group">
+			               <label>{{'label.passo' | translate}}</label><p>
+			               <span>{{itemSelecionado.item.descricaoTransacaoPasso}} ({{itemSelecionado.item.codigoTransacao}})</span>
+			           </div>
+		       	   </div>
+		       </div>
+		       
+		       <div class="row">
+	               <div class="col-md-12">
+		               <div class="form-group">
+			               <label>{{'label.descricao' | translate}}</label><p>
+			               <span>{{itemSelecionado.item.descricao}}</span>
+			           </div>
+		       	   </div>
+		       </div>
+		       
+		       <div class="row">
+	               <div class="col-md-12">
+		               <div class="form-group">
+			               <label>{{'label.parametros' | translate}}</label><p>
+			               <span ng-show="itemSelecionado.item.parametrosStr">{{itemSelecionado.item.parametrosStr}}</span>
+			               <span ng-show="!itemSelecionado.item.parametrosStr">-</span>
+			           </div>
+		       	   </div>
+		       </div>
+		       	
+       	   	</div>
+            <div class="modal-footer">
+            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="baixarEventoInstanciaConteudo(itemSelecionado.item.id)" ng-show="itemSelecionado.hasConteudo">{{'label.baixarconteudo' | translate}}</button>
+                &nbsp;
+                <button type="button" class="btn btn-default" ng-click="fecharJanelaVisualizarEventoModal()">{{'label.fechar' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

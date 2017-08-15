@@ -3,33 +3,22 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>gtm</artifactId>
+	<artifactId>gtm-console</artifactId>
 	<groupId>br.com.globality</groupId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 	<name>Projeto GTM: Projeto Root</name>
 	<description>Projeto Global Transaction Manager</description>
 
 	<modules>
-		<module>gtm-web</module>
-		<module>gtm-model</module>
-		<module>gtm-service</module>
-		<module>gtm-util</module>
-		<module>gtm-ear</module>
-		<module>gtm-rest</module>
+		<module>gtm-console-web</module>
+		<module>gtm-console-model</module>
+		<module>gtm-console-service</module>
+		<module>gtm-console-util</module>
+		<module>gtm-console-ear</module>
+		<module>gtm-console-web-api</module>
 	</modules>
-
-	<!-- <distributionManagement> -->
-	<!-- <repository> -->
-	<!-- <id>nexus-release-ancine</id> -->
-	<!-- <url>http://nexus.redhat.ancinerj.gov.br/repository/maven-releases/</url> -->
-	<!-- </repository> -->
-	<!-- <snapshotRepository> -->
-	<!-- <id>nexus-snapshots-ancine</id> -->
-	<!-- <url>http://nexus.redhat.ancinerj.gov.br/repository/maven-snapshots/</url> -->
-	<!-- </snapshotRepository> -->
-	<!-- </distributionManagement> -->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -92,7 +81,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -104,6 +93,34 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<!-- core library -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>2.3.1.GA</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- JAXB support -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxb-provider</artifactId>
+			<version>2.3.1.GA</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.sf.scannotation</groupId>
+			<artifactId>scannotation</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 
 	</dependencies>
@@ -123,28 +140,6 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!-- <plugin> <artifactId>maven-release-plugin</artifactId> <version>2.5.3</version> 
-					<configuration> <tagNameFormat>v@{project.version}</tagNameFormat> <autoVersionSubmodules>true</autoVersionSubmodules> 
-					<useReleaseProfile>false</useReleaseProfile> <releaseProfiles>release</releaseProfiles> 
-					</configuration> </plugin> -->
-				<plugin>
-					<groupId>external.atlassian.jgitflow</groupId>
-					<artifactId>jgitflow-maven-plugin</artifactId>
-					<version>1.0-m5.1</version>
-					<configuration>
-						<!-- noDeploy, significa não fazer o deploy para o repositório do Maven -->
-						<noDeploy>true</noDeploy>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<flowInitContext>
-							<masterBranchName>master</masterBranchName>
-							<developBranchName>develop</developBranchName>
-							<featureBranchPrefix>feature-</featureBranchPrefix>
-							<releaseBranchPrefix>release-</releaseBranchPrefix>
-							<hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
-						</flowInitContext>
-					</configuration>
-
-				</plugin>
 				<plugin>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>2.10.4</version>

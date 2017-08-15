@@ -1,0 +1,683 @@
+
+<div id="top" class="row" ng-init="init()">
+    <div class="col-md-8">
+        <h2>{{'label.transacao' | translate}}</h2>
+    </div>
+ 
+    <div class="col-md-3">
+        <form name="formFiltro" ng-submit="aplicarFiltro()">
+	        <div class="input-group h2">
+	       	    <input name="filtro" ng-model="filtro" class="form-control app-field" id="search" type="text" placeholder="{{'label.pesquisaritens' | translate}}">
+	            <span class="input-group-btn">
+	                <button type="submit" ng-class="'btn btn-' + config.skin">
+	                    <span class="glyphicon glyphicon-search"></span>
+	                </button>
+	            </span>
+	            <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	        </div>
+	    </form>
+    </div>
+ 
+    <div class="col-md-1">
+        <!-- Controle Habilitado -->
+        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" ng-click="acionarInclusao()" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_INCLUIR)">{{'label.incluir' | translate}}</a>
+    </div>
+</div> <!-- /#top -->
+
+<div id="list" class="row" style="margin-top:21px;">
+ 
+    <div class="table-responsive col-md-12">
+        <table class="table table-striped" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th width="180">{{'label.codigo' | translate}}</th>
+                    <th>{{'label.descricao' | translate}}</th>
+                    <th width="120">{{'label.dispevento' | translate}}</th>
+                    <th width="184">{{'label.dispconteudoevento' | translate}}</th>
+                    <th width="94">{{'label.restricao?' | translate}}</th>
+                    <th width="126" class="actions">{{'label.acoes' | translate}}</th>
+                 </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="itemGrid in itens">
+                    <td>{{itemGrid.codigo}}</td>
+                    <td>{{itemGrid.descricao}}</td>
+                    <td>{{itemGrid.qtdeDiaEventoFormatado}}</td>
+                    <td>{{itemGrid.qtdeDiaConteudoEventoFormatado}}</td>
+                    <td>{{itemGrid.restricaoFormatado}}</td>
+                    <td class="actions">
+                        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_ALTERAR)" ng-click="acionarAlteracao(itemGrid)">{{'label.alterar' | translate}}</a>&nbsp;
+				       	<a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-disabled="!AUTORIZADOR.isAcaoPermitida(AUTORIZADOR.ACAO_EXCLUIR)" ng-click="acionarExclusao(itemGrid)">{{'label.excluir' | translate}}</a>
+                    </td>
+                </tr> 
+            </tbody>
+         </table>
+ 
+     </div>
+ </div> <!-- /#list -->
+
+ <div id="bottom" class="row">
+    <div class="col-md-4">
+    	
+    </div>
+    <div class="col-md-4">
+    	<ul class="pagination">
+        	<li ng-class="currentPage==1 ? 'disabled' : ''"><a href="javascript:void(0)" ng-click="currentPage==1 ? void(0) : abrirPagina(currentPage-1)">&lt; {{'label.anterior' | translate}}</a></li>
+            <li ng-class="currentPage==$index+1 ? 'disabled' : ''" ng-repeat="i in getNumber(queryPages) track by $index"><a href="javascript:void(0)" ng-click="currentPage==$index+1 ? void(0) : abrirPagina($index+1)">{{$index+1}}</a></li>
+            <li ng-class="currentPage>=queryPages ? 'disabled' : 'next'"><a href="javascript:void(0)" ng-click="currentPage>=queryPages ? void(0) : abrirPagina(currentPage+1)" rel="next">{{'label.proximo' | translate}} &gt;</a></li>
+        </ul><!-- /.pagination -->
+    </div>
+    <div class="col-md-4" style="text-align:right; margin-top:26px;">
+    	<label class="paginacao-legenda" ng-show="querySize&gt;0">{{'label.exibindoregistros' | translate}} {{numFirstReg}}-{{numLastReg}} {{'label.de' | translate}} {{querySize}}</label>
+    </div>
+</div> <!-- /#bottom -->
+
+<!-- Modal -->
+<div class="modal fade" id="cadastro-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document" style="width:950px;">
+        <div class="modal-content" style="height:600px;">
+            <form name="form" ng-submit="submeterFormCadastro()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaCadastroModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!item.id">{{'label.incluirtransacao' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="item.id">{{'label.alterartransacao' | translate}}</h4>
+	            </div>
+	            <div class="modal-body">
+	                
+	            	<div class="row">
+	            		<div class="col-md-3">
+	            			<div class="form-group" ng-class="{ 'has-error': form.txCodigo.$dirty && form.txCodigo.$error.required }">
+				               <label for="txCodigo">{{'label.codigo' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <input type="text" name="txCodigo" id="txCodigo" ng-model="item.codigo" maxlength="64" class="form-control app-field" required/>
+				           	</div>
+	            		</div>	            		
+	            	</div>
+	            	
+	            	<ul class="nav nav-tabs" style="margin-top:5px;">
+					  <li id="tabDadosGeraisOpt" class="active"><a data-toggle="tab" data-target="#tabDadosGerais">{{'label.dadosgerais' | translate}}</a></li>
+					  <li id="tabPassosOpt"><a data-toggle="tab" data-target="#tabPassos">{{'label.passos' | translate}} ({{item.passos.length}})</a></li>
+					  <li id="tabParametrosOpt"><a data-toggle="tab" data-target="#tabParametros">{{'label.parametros' | translate}} ({{item.parametros.length}})</a></li>
+					  <li id="tabGruposOpt"><a data-toggle="tab" data-target="#tabGrupos">{{'label.grupos' | translate}} ({{item.grupos.length}})</a></li>
+					</ul>
+						            		            	
+				   	<div class="tab-content" style="border-left: 1px solid #e3e3e3; border-right: 1px solid #e3e3e3; border-bottom: 1px solid #e3e3e3; height:326px;">
+					  <div id="tabDadosGerais" class="tab-pane fade in active" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:10px; ">
+					    	
+					    	<div class="row">
+	            				<div class="col-md-6">	            		
+								   <div class="form-group" ng-class="{ 'has-error': form.txDescricao.$dirty && form.txDescricao.$error.required }">
+						               <label for="txDescricao">{{'label.descricao' | translate}}</label><label class="labelObrigatorio">*</label>
+						               <textarea name="txDescricao" id="txDescricao" ng-model="item.descricao" maxlength="512" class="form-control app-field" required></textarea>
+						           </div>
+						        </div>
+						    </div>
+						   
+						   <div class="row">
+						   		<div class="col-md-4">
+						   			<div class="form-group" ng-class="{ 'has-error': form.txDiasDisponiveisEvento.$dirty && form.txDiasDisponiveisEvento.$error.required }">
+						               <label for="txDiasDisponiveisEvento">{{'label.disponibilidadeevento' | translate}}</label><label class="labelObrigatorio">*</label>
+						               <input type="text" name="txDiasDisponiveisEvento" id="txDiasDisponiveisEvento" ng-model="item.qtdeDiaEvento" onkeypress="return somenteNumero(event)" maxlength="5" class="form-control app-field" required/>
+						           	</div>
+						   		</div>
+						   		<div class="col-md-4">
+						   			<div class="form-group" ng-class="{ 'has-error': form.txDiasDisponiveisConteudoEvento.$dirty && form.txDiasDisponiveisConteudoEvento.$error.required }">
+						               <label for="txDiasDisponiveisConteudoEvento">{{'label.disponibilidadeconteudoevento' | translate}}</label><label class="labelObrigatorio">*</label>
+						               <input type="text" name="txDiasDisponiveisConteudoEvento" id="txDiasDisponiveisConteudoEvento" ng-model="item.qtdeDiaConteudoEvento" onkeypress="return somenteNumero(event)" maxlength="5" class="form-control app-field" required/>
+						           </div>
+						   		</div>
+						   </div>
+						   
+						   <div class="row">
+						   		<div class="col-md-2">
+						   			<div class="form-group">
+						               <label for="cbRestricaoAcesso">{{'label.restricao?' | translate}}</label>
+						               <select name="cbRestricaoAcesso" id="cbRestricaoAcesso" ng-model="item.restricao" class="form-control app-field">
+						               		<option value="Y" selected>{{'label.sim' | translate}}</option>
+						               		<option value="N">{{'label.nao' | translate}}</option>
+						               </select>
+						           </div>
+						   		</div>
+						   </div>
+					  </div>
+					  
+					  <div id="tabPassos" class="tab-pane fade" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:10px; height: 325px; overflow-y: auto;">
+					    
+							<div id="top" class="row">
+							    <div class="col-md-12 right" style="margin-top:-16px;">
+							        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" ng-click="limparItemTabPassoSel()" data-toggle="modal" data-target="#add-transacao-passo-modal">{{'label.adicionar' | translate}}</a>
+							    </div>
+							</div> <!-- /#top -->
+							
+							<div id="list" class="row">
+							 
+							    <div class="table-responsive col-md-12" style="margin-top:8px;">
+							        <table class="table table-striped" cellspacing="0" cellpadding="0">
+							            <thead>
+							                <tr>
+							                    <th width="180">{{'label.codigo' | translate}}</th>
+							                    <th>{{'label.descricao' | translate}}</th>
+							                    <th width="170">{{'label.gravarnabase?' | translate}}</th>
+							                    <th width="130" class="actions">{{'label.acoes' | translate}}</th>      
+							                 </tr>
+							            </thead>
+							            <tbody>
+							                <tr ng-repeat="passo in item.passos">
+							                    <td>{{passo.codigo}}</td>
+							                    <td>{{passo.descricao}}</td>
+							                    <td>{{passo.gravarNaBase=='Y' ? ('label.sim' | translate) : ('label.nao' | translate)}}</td>
+							                    <td class="actions">
+							                        <!-- Controle de Alteração -->
+											        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-click="selecionarItemTabPasso(passo)" data-toggle="modal" data-target="#add-transacao-passo-modal">{{'label.alterar' | translate}}</a>
+											       	&nbsp;
+											       	<!-- Controle de Exclusão -->
+											       	<a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerPasso(passo)">{{'label.remover' | translate}}</a>
+							                    </td>
+							                </tr> 
+							            </tbody>
+							         </table>
+							 
+							     </div>
+							 </div> <!-- /#list -->
+
+					  </div>
+					  
+					  <div id="tabParametros" class="tab-pane fade" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:10px; height: 325px; overflow-y: auto;">
+					    
+							<div id="top" class="row">
+							    <div class="col-md-12 right" style="margin-top:-16px;">
+							    	<a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" ng-click="limparItemTabParametroSel()" data-toggle="modal" data-target="#add-transacao-parametro-modal">{{'label.adicionar' | translate}}</a>
+							    </div>
+							</div> <!-- /#top -->
+							
+							<div id="list" class="row">
+							
+							    <div class="table-responsive col-md-12" style="margin-top:8px;">
+							        <table class="table table-striped" cellspacing="0" cellpadding="0">
+							            <thead>
+							                <tr>
+							                    <th>{{'label.nome' | translate}}</th>
+							                    <th width="140">{{'label.prefixo' | translate}}</th>
+							                    <th width="160">{{'label.caminho' | translate}}</th>
+							                    <th width="280">{{'label.momento' | translate}}</th>
+							                    <th width="70">{{'label.ativo?' | translate}}</th>
+							                    <th width="130" class="actions">{{'label.acoes' | translate}}</th>
+							                 </tr>
+							            </thead>
+							            <tbody>
+							                <tr ng-repeat="parametro in item.parametros">
+							                    <td>{{parametro.nome}}</td>
+							                    <td>{{parametro.prefixo}}</td>
+							                    <td>{{parametro.caminho}}</td>
+							                    <td>{{parametro.momento == 'I' ? 'CRIA&Ccedil;&Atilde;O DO CONTE&Uacute;DO DO EVENTO' : parametro.momento == 'M' ? 'CRIA&Ccedil;&Atilde;O CONSIDERANDO O PAR&Acirc;METRO' : 'EXCLUS&Atilde;O DO CONTE&Uacute;DO DO EVENTO'}}</td>
+							                    <td>{{parametro.ativo=='Y' ? ('label.sim' | translate) : ('label.nao' | translate)}}</td>
+							                    <td class="actions">
+							                        <!-- Controle de Alteração -->
+											        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-click="selecionarItemTabParametro(parametro)" data-toggle="modal" data-target="#add-transacao-parametro-modal">{{'label.alterar' | translate}}</a>
+											       	&nbsp;
+											       	<!-- Controle de Exclusão -->
+											       	<a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerParametro(parametro)">{{'label.remover' | translate}}</a>
+							                    </td>
+							                </tr> 
+							            </tbody>
+							         </table>
+							 
+							     </div>
+							 </div> <!-- /#list -->
+							
+					  </div>
+					  
+					  <div id="tabGrupos" class="tab-pane fade" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:10px; height: 325px; overflow-y: auto;">
+					    
+							<div id="top" class="row">
+							    <div class="col-md-12 right" style="margin-top:-16px;">
+							        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" data-toggle="modal" data-target="#add-transacao-grupo-modal">{{'label.adicionar' | translate}}</a>
+							    </div>
+							</div> <!-- /#top -->
+							
+							<div id="list" class="row">
+							 
+							    <div class="table-responsive col-md-12" style="margin-top:8px;">
+							        <table class="table table-striped" cellspacing="0" cellpadding="0">
+							            <thead>
+							                <tr>
+							                    <th width="220">{{'label.codigo' | translate}}</th>
+							                    <th>{{'label.descricao' | translate}}</th>
+							                    <th width="70" class="actions">{{'label.acoes' | translate}}</th>      
+							                 </tr>
+							            </thead>
+							            <tbody>
+							                <tr ng-repeat="transacaoGrupo in item.grupos">
+							                    <td>{{transacaoGrupo.grupo.codigo}}</td>
+							                    <td>{{transacaoGrupo.grupo.descricao}}</td>
+							                    <td class="actions">
+							                       	<a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerGrupo(transacaoGrupo)">{{'label.remover' | translate}}</a>	
+							                    </td>
+							                </tr> 
+							            </tbody>
+							         </table>
+							 
+							     </div>
+							 </div> <!-- /#list -->
+
+					  </div>
+					</div>           
+		           	
+			    </div>
+	        
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		    			</div>      
+		    			<div class="col-md-8">
+		    				<span style="color:#ff0000; font-size:10pt; margin-left:-30px; padding-top:12px;" ng-show="msgValidacaoCadastro">{{msgValidacaoCadastro}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		    				<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.gravar' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaCadastroModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	           </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="fecharJanelaDeleteModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">{{'label.excluirtransacao' | translate}}</h4>
+            </div>
+            <div class="modal-body">{{'label.confirmacaoexclusao' | translate}}</div>
+            <div class="modal-footer">
+                <button type="button" ng-class="'btn btn-' + config.skin" ng-click="excluir()">{{'label.sim' | translate}}</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default" ng-click="fecharJanelaDeleteModal()">{{'label.nao' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adição Transação Parâmetro -->
+<div class="modal fade" id="add-transacao-parametro-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:50px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form name="form" ng-submit="!itemTabParametro.id ? adicionarParametro() : alterarParametro()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaAddParametroModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!itemTabParametro.id">{{'label.adicionarparametro' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="itemTabParametro.id">{{'label.alterarparametro' | translate}}</h4>
+	            </div>
+	            <div class="modal-body">
+	              
+	               <div class="row">
+	               		<div class="col-md-6">
+							<div class="form-group" ng-class="{ 'has-error': form.txNome.$dirty && form.txNome.$error.required }">
+				              <label for="txNome">{{'label.nome' | translate}}</label><label class="labelObrigatorio">*</label> 
+				               <input type="text" name="txNome" id="txNome" ng-model="itemTabParametro.nome" maxlength="80" class="form-control app-field" required/>
+				            </div>               		
+	               		</div>
+	               		<div class="col-md-6">
+	               			<div class="form-group">
+				               <label for="txNamespace">{{'label.namespace' | translate}}</label>
+				               <input type="text" name="txCNamespace" id="txNamespace" ng-model="itemTabParametro.namespace" maxlength="80" class="form-control app-field" />
+				            </div>
+	               		</div>	               		
+	               </div>
+	               
+	               <div class="row">
+	               		<div class="col-md-6">
+	               			<div class="form-group">
+				               <label for="txPrefixo">{{'label.prefixo' | translate}}</label>
+				               <input type="text" name="txPrefixo" id="txPrefixo" ng-model="itemTabParametro.prefixo" maxlength="80" class="form-control app-field" />
+				            </div>
+	               		</div>
+	               		<div class="col-md-6">
+	               			<div class="form-group">
+				               <label for="txPath">{{'label.caminho' | translate}}</label>
+				               <input type="text" name="txPath" id="txPath" ng-model="itemTabParametro.caminho" maxlength="80" class="form-control app-field" />
+				            </div>
+	               		</div>
+	               </div>
+	               
+		           <div class="row">
+				   		<div class="col-md-8">
+				   			<div class="form-group" ng-class="{ 'has-error': form.cbMomento.$dirty && form.cbMomento.$error.required }">
+				                <label for="cbMomento">{{'label.momento' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <select name="cbMomento" id="cbMomento" ng-model="itemTabParametro.momento" class="form-control app-field" required>
+				               		<option value="">- SELECIONE -</option>
+			               			<option value="I">CRIA&Ccedil;&Atilde;O DO CONTE&Uacute;DO DO EVENTO</option>
+		                            <option value="M">CRIA&Ccedil;&Atilde;O CONSIDERANDO O PAR&Acirc;METRO</option>
+		                            <option value="D">EXCLUS&Atilde;O DO CONTE&Uacute;DO DO EVENTO</option>
+				               </select>
+				           	</div>
+				   		</div>
+				   		<div class="col-md-4">
+				   			<div class="form-group">
+				               <label for="cbAtivo">{{'label.ativo?' | translate}}</label>
+				               <select name="cbAtivo" id="cbAtivo" ng-model="itemTabParametro.ativo" class="form-control app-field">
+				               		<option value="Y" selected>{{'label.sim' | translate}}</option>
+				               		<option value="N">{{'label.nao' | translate}}</option>
+				               </select>
+				           </div>
+				   		</div>
+				   </div>
+		           	                       
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		    			</div>      
+		    			<div class="col-md-8">
+		    				<span style="color:#ff0000; font-size:10pt; margin-left:-30px; padding-top:10px;" ng-show="msgValidacaoCadParametro">{{msgValidacaoCadParametro}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaAddParametroModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	           
+	        </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adição Transação Passo -->
+<div class="modal fade" id="add-transacao-passo-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:60px;">
+    <div class="modal-dialog" role="document" style="width:910px;">
+        <div class="modal-content">
+            <form name="form" ng-submit="!itemTabPasso.id ? adicionarPasso() : alterarPasso()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaAddPassoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!itemTabPasso.id">{{'label.adicionarpasso' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="itemTabPasso.id">{{'label.alterarpasso' | translate}}</h4>
+	            </div>
+	            	
+	            <div class="modal-body">
+	                
+	                <div class="row">
+		                
+		                <div class="col-md-3">
+	                		
+			               <div class="form-group" ng-class="{ 'has-error': form.txCodigo.$dirty && form.txCodigo.$error.required }">
+				               <label for="txCodigo">{{'label.codigo' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <input type="text" name="txCodigo" id="txCodigo" ng-model="itemTabPasso.codigo" maxlength="64" class="form-control app-field" required/>
+				           </div>
+				               
+				           <div class="form-group" ng-class="{ 'has-error': form.txDescricao.$dirty && form.txDescricao.$error.required }">
+				               <label for="txDescricao">{{'label.descricao' | translate}}</label><label class="labelObrigatorio">*</label>
+				               <textarea name="txDescricao" id="txDescricao	" ng-model="itemTabPasso.descricao" maxlength="512" class="form-control app-field" required></textarea>
+						   </div>
+						   
+						   <div class="row">
+						   		<div class="col-md-8">
+						   			<div class="form-group">
+						               <label for="cbGravaBase">{{'label.gravarnabase?' | translate}}</label>
+						               <select name="cbGravaBase" id="cbGravaBase" ng-model="itemTabPasso.gravarNaBase" class="form-control app-field">
+						               		<option value="Y" selected>{{'label.sim' | translate}}</option>
+				               				<option value="N">{{'label.nao' | translate}}</option>
+						               </select>
+						           </div>
+						   		</div>
+						   </div>
+						   
+		           		</div>
+		           		
+			       	  	<div class="col-md-9">
+			       	  		
+			       	  		<ul class="nav nav-tabs" style="margin-top:5px;">
+							  <li id="tabPassoNiveisEventoOpt" class="active"><a data-toggle="tab" data-target="#tabPassoNiveisEvento">{{'label.niveisevento' | translate}} ({{qtdeNiveisEvento}})</a></li>
+							  <li id="tabPassoAcoesOpt"><a data-toggle="tab" data-target="#tabPassoAcoes">{{'label.acoes' | translate}} ({{itemTabPasso.acoes.length}})</a></li>
+							</ul>
+								            		            	
+						   	<div class="tab-content" style="border-left: 1px solid #e3e3e3; border-right: 1px solid #e3e3e3; border-bottom: 1px solid #e3e3e3; height:290px;">
+								
+								<div id="tabPassoNiveisEvento" class="tab-pane fade in active" style="padding-left:16px; padding-right:16px; padding-top:16px; padding-bottom:10px; ">
+			       	  				
+			       	  				<div class="row">
+	            						<div class="col-md-12">	  
+			       	  				
+						       	   			<fieldset  class="well">
+					   							<div class="table-responsive col-md-12" style="padding:4px; height:244px;">
+											        <table class="table table-striped" cellspacing="0" cellpadding="0">
+											            <thead>
+											                <tr>
+											                    <th width="30" align="center"><input type="checkbox" name="ckEventoNivelSelTodos" ng-model="flagSelTodosEventoNivel" ng-click="selecionarTodosEventoNivel()"></th>
+											                 	<th>{{'label.descricao' | translate}}</th>
+											                <th width="100">{{'label.conteudo' | translate}}</th>
+											                 </tr>
+											            </thead>
+											            <tbody>
+											                <tr ng-repeat="itemSubGrid in itemTabPasso.eventoNiveis" valign="middle">
+											                    <td align="center"><div style="margin-top:8px;"><input type="checkbox" ng-model="itemSubGrid.selecionado" ng-click="resetValidacaoLista(); incrementarNiveisEventoSel(itemSubGrid);"></div></td>
+											                    <td><div style="margin-top:8px;">{{itemSubGrid.descricao}}</div></td>
+											                    <td>
+											                        <select class="form-control app-field" ng-model="itemSubGrid.conteudo" ng-disabled="!itemSubGrid.selecionado">
+											                        	<option value="Y" selected>{{'label.sim' | translate}}</option>
+							               								<option value="N">{{'label.nao' | translate}}</option>
+											                        </select>					                 
+											                    </td>
+											                </tr> 
+											            </tbody>
+											         </table>
+											 		
+											     </div>	  
+											</fieldset>
+											
+										</div>
+									</div>
+							
+							   	</div>	
+							   
+							   	<div id="tabPassoAcoes" class="tab-pane fade" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:16px; height: 290px; overflow-y: auto;">
+							   		
+									<div id="top" class="row">
+									    <div class="col-md-12 right" style="margin-top:-16px;">
+									        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" data-toggle="modal" data-target="#add-transacao-passo-acao-modal">{{'label.adicionar' | translate}}</a>
+									    </div>
+									</div> <!-- /#top -->
+									
+									<div id="list" class="row">
+									 
+									    <div class="table-responsive col-md-12" style="margin-top:8px;">
+									        <table class="table table-striped" cellspacing="0" cellpadding="0">
+									            <thead>
+									                <tr>
+									                    <th>{{'label.tipoevento' | translate}}</th>
+									                    <th width="100">{{'label.intervalo' | translate}}</th>
+									                    <th width="140">{{'label.qtdetentativas' | translate}}</th>
+									                    <th width="90">{{'label.reenviar?' | translate}}</th>
+									                    <th width="130" class="actions">{{'label.acoes' | translate}}</th>      
+									                 </tr>
+									            </thead>
+									            <tbody>
+									                <tr ng-repeat="acao in itemTabPasso.acoes">
+									                    <td>{{acao.eventoTipo.id}}</td>
+									                    <td>{{acao.intervalo}}</td>
+									                    <td>{{acao.qtdeTentativas}}</td>
+									                    <td>{{acao.reenvio=='Y' ? ('label.sim' | translate) : ('label.nao' | translate)}}</td>
+									                    <td class="actions">
+									                        <!-- Controle de Alteração -->
+													        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-click="selecionarItemTabPassoAcao(acao)" data-toggle="modal" data-target="#add-transacao-passo-acao-modal">{{'label.alterar' | translate}}</a>
+													       	&nbsp;
+													       	<!-- Controle de Exclusão -->
+													       	<a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerPassoAcao(acao)">{{'label.remover' | translate}}</a>
+									                    </td>
+									                </tr> 
+									            </tbody>
+									         </table>
+									 
+									     </div>
+									 </div> <!-- /#list -->
+
+			       	  			</div>
+							   
+							</div>					     	         	   
+			       	   	</div>		       		
+		       		</div>		       
+		       	</div>
+		       
+	          	<div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		            	</div>      
+		    			<div class="col-md-8">
+			            	<span style="color:#ff0000; font-size:10pt; margin-left:-30px; padding-top:10px;" ng-show="msgValidacaoCadPasso">{{msgValidacaoCadPasso}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaAddPassoModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	         </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adição de Ação para Passo de Transação -->
+<div class="modal fade" id="add-transacao-passo-acao-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:80px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form name="form" ng-submit="!itemTabPassoAcao.idFake ? adicionarPassoAcao() : alterarPassoAcao()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaAddPassoAcaoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!itemTabPassoAcao.idFake">{{'label.adicionaracao' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="itemTabPassoAcao.idFake">{{'label.alteraracao' | translate}}</h4>
+	            </div>
+	            <div class="modal-body">
+	               
+	               <div class="form-group" ng-class="{ 'has-error': form.cbEventoTipo.$dirty && form.cbEventoTipo.$error.required }">
+		               <label for="cbEventoTipo">{{'label.tipoevento' | translate}}</label><label class="labelObrigatorio">*</label>
+		               <select name="cbEventoTipo" id="cbEventoTipo" ng-model="itemTabPassoAcao.eventoTipo.id" ng-disabled="itemTabPassoAcao.idFake" ng-options="opt.id as opt.id + ' - ' + opt.descricao for opt in eventoTipos" class="form-control app-field" required>
+		               		<option value="">{{'label.comboboxpadrao' | translate}}</option>
+		               </select>
+		           </div>
+		           <div class="row">
+				   		<div class="col-md-3">
+				   			<div class="form-group">
+				               <label for="txIntervalo">{{'label.intervalo' | translate}}</label>
+				               <input type="text" name="txIntervalo" id="txIntervalo" ng-model="itemTabPassoAcao.intervalo" maxlength="5" onkeypress="return somenteNumero(event)" class="form-control app-field" />
+				           	</div>
+				   		</div>
+				   		
+				   		<div class="col-md-3">
+				   			<div class="form-group">
+				               <label for="txQtdeTentativas">{{'label.qtdetentativas' | translate}}</label>
+				               <input type="text" name="txQtdeTentativas" id="txQtdeTentativas" ng-model="itemTabPassoAcao.qtdeTentativas" onkeypress="return somenteNumero(event)" maxlength="5" onkeypress="return somenteNumero(event)" class="form-control app-field" />
+				           </div>
+				   		</div>
+				   		
+				   		<div class="col-md-6">
+				   			<div class="form-group">			   			
+				               <label for="txFilaDestino">{{'label.filadestino' | translate}}</label>
+				               <input type="text" name="txFilaDestino" id="txFilaDestino" ng-model="itemTabPassoAcao.filaDestino" maxlength="80" class="form-control app-field"/>
+				            </div>
+				   		</div>
+				   </div>
+				   
+				   <div class="row">
+				   		<div class="col-md-8">
+				   			<div class="form-group">
+				               <label for="txDestinatario">{{'label.destinatario' | translate}}</label>
+				               <input type="text" name="txDestinatario" id="txDestinatario" ng-model="itemTabPassoAcao.destinatario" maxlength="80" class="form-control app-field"/>
+				            </div>
+				   		</div>
+				   		<div class="col-md-4">
+				   			<div class="form-group">
+				               <label for="cbReenvio">{{'label.reenviar?' | translate}}</label>
+				               <select name="cbReenvio" id="cbReenvio" ng-model="itemTabPassoAcao.reenvio" class="form-control app-field">
+				               		<option value="Y" selected>{{'label.sim' | translate}}</option>
+				               		<option value="N">{{'label.nao' | translate}}</option>
+				               </select>
+				           </div>
+				   		</div>
+				   </div>
+				   
+				   <div class="row">
+				   		<div class="col-md-4">
+				   			<div class="form-group">
+				               <label for="txXPath">{{'label.xpath' | translate}}</label>
+				               <input type="text" name="txXPath" id="txXPath" ng-model="itemTabPassoAcao.xpath" maxlength="80" class="form-control app-field" />
+				           	</div>
+				   		</div>
+				   		<div class="col-md-4">
+				   			<div class="form-group">
+				               <label for="txNamespace">{{'label.namespace' | translate}}</label>
+				               <input type="text" name="txNamespace" id="txNamespace" ng-model="itemTabPassoAcao.namespace" maxlength="80" class="form-control app-field" />
+				           	</div>
+				   		</div>
+				   		<div class="col-md-4">
+				   			<div class="form-group">
+				               <label for="txPrefixoNamespace">{{'label.prefixo' | translate}}</label>
+				               <input type="text" name="txPrefixoNamespace" id="txPrefixoNamespace" ng-model="itemTabPassoAcao.prefixoNameSpace" maxlength="80" class="form-control app-field" />
+				           	</div>
+				   		</div>
+				   </div>
+				           
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		    			</div>      
+		    			<div class="col-md-8">
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaAddPassoAcaoModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	           </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adição Transação Grupo -->
+<div class="modal fade" id="add-transacao-grupo-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:50px;">
+    <div class="modal-dialog" role="document" style="width:500px;">
+        <div class="modal-content">
+            <form name="form" ng-submit="concluirAdicaoGrupo()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaAddGrupoModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel">{{'label.adicionargrupos' | translate}}</h4>
+	            </div>
+	            <div class="modal-body" style="height:350px;">
+	             	 <table class="table table-striped" cellspacing="0" cellpadding="0">
+			            <thead>
+			                <tr>
+			                    <th width="120">{{'label.codigo' | translate}}</th>
+			                    <th>{{'label.descricao' | translate}}</th>
+			                    <th width="30" align="center"><input type="checkbox" name="ckGrupoSelTodos" ng-model="flagSelTodosAddGrupo" ng-click="selecionarTodosAddGrupo()"/></th>
+			                 </tr>
+			            </thead>
+			            <tbody>
+			                <tr ng-repeat="itemAddGrid in gruposPendentes">
+			                    <td>{{itemAddGrid.codigo}}</td>
+			                    <td>{{itemAddGrid.descricao}}</td>
+			                    <td class="actions" align="center">
+			                        <input type="checkbox" ng-model="itemAddGrid.selecionado"/>					                 
+			                    </td>
+			                </tr> 
+			            </tbody>
+			         </table>		
+	       	   	</div>
+	            <div class="modal-footer">
+	            	<div class="row">
+	            		<div class="col-md-2">
+	            			<button type="button" class="btn btn-default" ng-click="carregarGrupos()">{{'label.atualizar' | translate}}</button>
+	            		</div>
+	            		<div class="col-md-10">
+	            			<img ng-if="dataLoadingAddGrupo" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaAddGrupoModal()">{{'label.cancelar' | translate}}</button>
+	            		</div>
+	            	</div>
+	            	
+		        </div>
+	        </form>
+        </div>
+    </div>
+</div>
+
