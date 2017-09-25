@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "ISC_TB025_PERFIL_REC_PERMISSAO")
+@Table(name = "PRFIL_REC_PRMSS")
 @NamedQueries({ @NamedQuery(name = "PerfilRecursoPermissao.findAll", query = "select t from PerfilRecursoPermissao t") })
 public class PerfilRecursoPermissao extends AbstractEntity {
 
@@ -30,30 +30,30 @@ public class PerfilRecursoPermissao extends AbstractEntity {
 	private static final long serialVersionUID = -4931835072716510324L;
 
 	@Id
-	@Column(name = "NU_PERFIL_REC_PERMISSAO", nullable = false, unique = true)
+	@Column(name = "N_PRFIL_REC_PRMSS", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "IC_ATIVO", nullable = false)
+	@Column(name = "C_ATIVO", nullable = false)
 	@NotNull
 	private Boolean ativo;
 	
-	@Column(name = "DT_CARGA", nullable = false)
+	@Column(name = "D_CARGA", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date dataCarga;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_PERFIL", nullable=false)
+	@JoinColumn(name="N_PRFIL", nullable=false)
 	@NotNull
 	private Perfil perfil;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_RECURSO", nullable=false)
+	@JoinColumn(name="N_REC", nullable=false)
 	@NotNull
 	private Recurso recurso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_PERMISSAO", nullable=false)
+	@JoinColumn(name="N_PRMSS", nullable=false)
 	@NotNull
 	private Permissao permissao;
 

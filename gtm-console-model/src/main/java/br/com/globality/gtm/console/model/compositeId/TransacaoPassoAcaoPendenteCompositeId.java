@@ -16,13 +16,13 @@ public class TransacaoPassoAcaoPendenteCompositeId implements Serializable {
 	 */
 	private static final long serialVersionUID = -3923192335407987841L;
 
-	@Column(name = "NU_TRA_PASSO", nullable = false)
+	@Column(name = "N_TRANS_PASSO", nullable = false)
 	private Long idTransacaoPasso;
     
-	@Column(name = "CO_EVT_TIPO", nullable = false, length = 4)
+	@Column(name = "C_EVNTO_TPO", nullable = false, length = 4)
 	private String idEventoTipo;
 	
-	@Column(name = "DT_TRA_ACA_PENDENTE", nullable = false)
+	@Column(name = "D_TRANS_ACAO_PEND", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	

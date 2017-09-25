@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "ISC_TB022_PERMISSAO")
+@Table(name = "PRMSS")
 @NamedQueries({ @NamedQuery(name = "Permissao.findAll", query = "select t from Permissao t") })
 public class Permissao extends AbstractEntity {
 	
@@ -27,25 +27,25 @@ public class Permissao extends AbstractEntity {
 	private static final long serialVersionUID = 4904889033209776225L;
 
 	@Id
-	@Column(name = "NU_PERMISSAO", nullable = false, unique = true)
+	@Column(name = "N_PRMSS", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_PERMISSAO", nullable = false, length = 30)
+	@Column(name = "C_PRMSS", nullable = false, length = 30)
 	@NotNull
 	private String codigo;
 	
-	@Column(name = "NM_PERMISSAO", nullable = false, length = 80)
+	@Column(name = "I_PRMSS", nullable = false, length = 80)
 	@NotNull
 	private String nome;
 	
-	@Column(name = "NR_ORDEM", nullable = false)
+	@Column(name = "N_ORD", nullable = false)
 	private Long ordem;
 	
-	@Column(name = "IC_ATIVO", nullable = false)
+	@Column(name = "C_ATIVO", nullable = false)
 	@NotNull
 	private Boolean ativo;
 	
-	@Column(name = "DT_CARGA", nullable = false)
+	@Column(name = "D_CARGA", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date dataCarga;

@@ -22,9 +22,9 @@ import javax.persistence.TemporalType;
  *
  */
 @Entity
-@Table(name = "ISC_TB036_LOG_FUNCIONAL")
+@Table(name = "LOG_FUNCL")
 @NamedQueries({ @NamedQuery(name = "LogFuncional.findAll", query = "select t from LogFuncional t") })
-@SequenceGenerator(name = "seq_log_funcional", sequenceName = "ISC_TB036_LOG_FUNCIONAL_S", initialValue = 1)
+@SequenceGenerator(name = "seq_log_funcional", sequenceName = "SQ07_LOG_FUNCL", initialValue = 1)
 public class LogFuncional extends AbstractEntity {
 	
 	/**
@@ -34,24 +34,24 @@ public class LogFuncional extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_funcional")
-	@Column(name = "NU_LOG_FUNCIONAL", nullable = false, unique = true)
+	@Column(name = "N_LOG_FUNCL", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "IC_ATIVO", nullable = false, length = 1)
+	@Column(name = "C_ATIVO", nullable = false, length = 1)
 	private boolean ativo;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO", nullable = false)
+	@JoinColumn(name = "N_USUAR", nullable = false)
 	private Usuario usuario;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_RECURSO", nullable = false)
+	@JoinColumn(name = "N_REC", nullable = false)
 	private Recurso recurso;
 	
-	@Column(name = "NU_REFERENCIA", nullable = false)
+	@Column(name = "N_REFT", nullable = false)
 	private Long idReferencia;
 	
-	@Column(name = "DT_INCLUSAO", nullable = false)
+	@Column(name = "D_INCL", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
 	

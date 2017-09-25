@@ -19,9 +19,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB002_DIVISAO")
+@Table(name = "DIVIS")
 @NamedQueries({ @NamedQuery(name = "Divisao.findAll", query = "select t from Divisao t") })
-@SequenceGenerator(name = "seq_divisao", sequenceName = "ISC_TB002_DIVISAO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_divisao", sequenceName = "SQ03_DIVIS", initialValue = 1)
 @RESTful
 public class Divisao extends AbstractEntity {
 	
@@ -32,15 +32,15 @@ public class Divisao extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_divisao")
-	@Column(name = "NU_DIVISAO", nullable = false, unique = true)
+	@Column(name = "N_DIVIS", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_DIVISAO", nullable = true, length = 64)
+	@Column(name = "C_DIVIS", nullable = true, length = 64)
 	@GenericOrderByField("asc")
 	@GenericPredicateField
 	private String codigo;
 	
-	@Column(name = "DE_DIVISAO", nullable = true, length = 512)
+	@Column(name = "R_DIVIS", nullable = true, length = 512)
 	@GenericPredicateField
 	private String descricao;
 	

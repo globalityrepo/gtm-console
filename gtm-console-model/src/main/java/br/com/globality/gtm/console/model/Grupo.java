@@ -18,9 +18,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB007_GRUPO")
+@Table(name = "GRP")
 @NamedQueries({ @NamedQuery(name = "Grupo.findAll", query = "select t from Grupo t") })
-@SequenceGenerator(name = "seq_grupo", sequenceName = "ISC_TB007_GRUPO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_grupo", sequenceName = "SQ16_GRP", initialValue = 1)
 @RESTful("grupo")
 public class Grupo extends AbstractEntity {
 
@@ -30,14 +30,14 @@ public class Grupo extends AbstractEntity {
 	private static final long serialVersionUID = -6953278417112770729L;
 
 	@Id
-	@Column(name = "NU_GRUPO", nullable = false, unique = true)
+	@Column(name = "N_GRP", nullable = false, unique = true)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_grupo")
 	private Long id;
 
-	@Column(name = "CO_GRUPO", nullable = false, length = 64)
+	@Column(name = "C_GRP", nullable = false, length = 64)
 	private String codigo;
 
-	@Column(name = "DE_GRUPO", nullable = false, length = 512)
+	@Column(name = "R_GRP", nullable = false, length = 512)
 	private String descricao;
 	
 	@Transient

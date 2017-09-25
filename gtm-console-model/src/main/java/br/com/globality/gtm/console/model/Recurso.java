@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "ISC_TB023_RECURSO")
+@Table(name = "REC")
 @NamedQueries({ @NamedQuery(name = "Recurso.findAll", query = "select t from Recurso t") })
 public class Recurso extends AbstractEntity {
 
@@ -30,32 +30,32 @@ public class Recurso extends AbstractEntity {
 	private static final long serialVersionUID = -1806027463941873769L;
 
 	@Id
-	@Column(name = "NU_RECURSO", nullable = false, unique = true)
+	@Column(name = "N_REC", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_RECURSO", nullable = false, length = 30)
+	@Column(name = "C_REC", nullable = false, length = 30)
 	@NotNull
 	private String codigo;
 	
-	@Column(name = "NM_RECURSO", nullable = false, length = 80)
+	@Column(name = "I_REC", nullable = false, length = 80)
 	@NotNull
 	private String nome;
 		
-	@Column(name = "IC_ATIVO", nullable = false)
+	@Column(name = "C_ATIVO", nullable = false)
 	@NotNull
 	private Boolean ativo;
 	
-	@Column(name = "DT_CARGA", nullable = false)
+	@Column(name = "D_CARGA", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date dataCarga;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_RECURSO_PAI", nullable=true)
+	@JoinColumn(name="N_REC_PAI", nullable=true)
 	private Recurso recursoPai;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_MODULO", nullable=true)
+	@JoinColumn(name="N_MDULO", nullable=true)
 	private Modulo modulo;
 	
 	public Long getId() {

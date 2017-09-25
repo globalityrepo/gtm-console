@@ -19,7 +19,7 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB024_PERFIL")
+@Table(name = "PRFIL")
 @NamedQueries({ @NamedQuery(name = "Perfil.findAll", query = "select t from Perfil t") })
 @RESTful("perfil")
 public class Perfil extends AbstractEntity {
@@ -30,22 +30,22 @@ public class Perfil extends AbstractEntity {
 	private static final long serialVersionUID = -4577496497620040446L;
 
 	@Id
-	@Column(name = "NU_PERFIL", nullable = false, unique = true)
+	@Column(name = "N_PRFIL", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "NM_PERFIL", nullable = false, length = 80)
+	@Column(name = "I_PRFIL", nullable = false, length = 80)
 	@NotNull
 	private String nome;
 	
-	@Column(name = "DE_PERFIL", nullable = false, length = 512)
+	@Column(name = "R_PRFIL", nullable = false, length = 512)
 	@NotNull
 	private String descricao;
 	
-	@Column(name = "IC_ATIVO", nullable = false)
+	@Column(name = "C_ATIVO", nullable = false)
 	@NotNull
 	private Boolean ativo;
 	
-	@Column(name = "DT_CARGA", nullable = false)
+	@Column(name = "D_CARGA", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date dataCarga;

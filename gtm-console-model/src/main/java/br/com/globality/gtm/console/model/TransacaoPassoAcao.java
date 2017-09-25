@@ -20,7 +20,7 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB004_TRA_PAS_ACAO")
+@Table(name = "TRANS_PASSO_ACAO")
 @NamedQueries({ @NamedQuery(name = "TransacaoPassoAcao.findAll", query = "select t from TransacaoPassoAcao t") })
 @RESTful
 public class TransacaoPassoAcao extends AbstractEntity {
@@ -31,42 +31,42 @@ public class TransacaoPassoAcao extends AbstractEntity {
 	private TransacaoPassoAcaoCompositeId id;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_PASSO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_PASSO", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("codigo")
 	private TransacaoPasso transacaoPasso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="CO_EVT_TIPO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="C_EVNTO_TPO", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("id")
 	private EventoTipo eventoTipo;
 	
-	@Column(name = "QT_INTERVALO", nullable = true)
+	@Column(name = "Q_INTVL", nullable = true)
 	private Long intervalo;
 	
-	@Column(name = "QT_TENTATIVAS", nullable = true)
+	@Column(name = "Q_TENTV", nullable = true)
 	private Long qtdeTentativas;
 	
-	@Column(name = "DE_FILA_DESTINO", nullable = true, length = 512)
+	@Column(name = "R_FILA_DSTNO", nullable = true, length = 512)
 	@GenericPredicateField
 	private String filaDestino;
 	
-	@Column(name = "DE_DESTINATARIO", nullable = true, length = 512)
+	@Column(name = "R_DSTNA", nullable = true, length = 512)
 	@GenericPredicateField
 	private String destinatario;
 	
-	@Column(name = "IC_REENVIO", nullable = true, length = 1)
+	@Column(name = "C_REENV", nullable = true, length = 1)
 	@GenericPredicateField
 	private String reenvio;
 	
-	@Column(name = "DE_TRA_NU_XPATH", nullable = true, length = 512)
+	@Column(name = "R_TRANS_NRO_CMNHO", nullable = true, length = 512)
 	@GenericPredicateField
 	private String xpath;
 	
-	@Column(name = "DE_TRA_NU_NAMESPACE", nullable = true, length = 512)
+	@Column(name = "R_TRANS_NRO_ENDER", nullable = true, length = 512)
 	@GenericPredicateField
 	private String namespace;
 	
-	@Column(name = "DE_TRA_NU_PREFIXO", nullable = true, length = 512)
+	@Column(name = "R_TRANS_NRO_PREFX", nullable = true, length = 512)
 	@GenericPredicateField
 	private String prefixoNameSpace;
 	

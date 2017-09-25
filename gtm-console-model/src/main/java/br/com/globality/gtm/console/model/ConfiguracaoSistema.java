@@ -13,7 +13,7 @@ import br.com.globality.gtm.console.model.annotation.GenericOrderByField;
  *
  */
 @Entity
-@Table(name = "ISC_TB027_CONFIGURACAO_SISTEMA")
+@Table(name = "CONFG_SIST")
 public class ConfiguracaoSistema extends AbstractEntity {
 	
 	/**
@@ -22,19 +22,19 @@ public class ConfiguracaoSistema extends AbstractEntity {
 	private static final long serialVersionUID = -7739944435301122347L;
 
 	@Id
-	@Column(name = "NU_CONFIGURACAO", nullable = false, unique = true)
+	@Column(name = "N_CONFG", nullable = false, unique = true)
 	@GenericOrderByField("desc")
 	private Long id;
 	
-	@Column(name = "CO_LOCALE", nullable = false, length = 30)
+	@Column(name = "C_LOC", nullable = false, length = 30)
 	@NotNull
 	private String locale;
 	
-	@Column(name = "CO_SKIN", nullable = false, length = 30)
+	@Column(name = "C_APRES", nullable = false, length = 30)
 	@NotNull
 	private String skin;
 	
-	@Column(name = "TX_PATH_STORAGE", nullable = true, length = 80)
+	@Column(name = "R_CMNHO_REP", nullable = true, length = 80)
 	private String pathStorage;
 
 	public Long getId() {

@@ -17,7 +17,7 @@ import br.com.globality.gtm.console.model.compositeId.TransacaoParametroValorCom
  *
  */
 @Entity
-@Table(name = "ISC_TB014_TRA_PAR_VALOR")
+@Table(name = "TRANS_PARM_VLR")
 @NamedQueries({ @NamedQuery(name = "TransacaoParametroValor.findAll", query = "select t from TransacaoParametroValor t") })
 public class TransacaoParametroValor extends AbstractEntity {
 
@@ -29,15 +29,15 @@ public class TransacaoParametroValor extends AbstractEntity {
 	@EmbeddedId
 	private TransacaoParametroValorCompositeId id;
 	
-	@Column(name = "TXT_TRA_EVT_INS_VALOR", nullable = true, length = 512)
+	@Column(name = "R_TRANS_EVNTO_INSTN_VLR", nullable = true, length = 512)
 	private String valor;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_PARAMETRO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_PARM", nullable=false, insertable=false, updatable=false)
 	private TransacaoParametro transacaoParametro;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_EVT_INSTANCIA", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_EVNTO_INSTN", nullable=false, insertable=false, updatable=false)
 	private EventoInstancia eventoInstancia;
 	
 	public TransacaoParametroValorCompositeId getId() {

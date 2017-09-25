@@ -28,9 +28,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB030_ENTIDADE")
+@Table(name = "ENTID")
 @NamedQueries({ @NamedQuery(name = "Entidade.findAll", query = "select t from Entidade t") })
-@SequenceGenerator(name = "seq_entidade", sequenceName = "ISC_TB030_ENTIDADE_S", initialValue = 1)
+@SequenceGenerator(name = "seq_entidade", sequenceName = "SQ05_ENTID", initialValue = 1)
 @RESTful
 public class Entidade extends AbstractEntity {
 	
@@ -41,38 +41,38 @@ public class Entidade extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_entidade")
-	@Column(name = "NU_ENTIDADE", nullable = false, unique = true)
+	@Column(name = "N_ENTID", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_ENTIDADE", nullable = true, length = 30)
+	@Column(name = "C_ENTID", nullable = true, length = 30)
 	@GenericOrderByField("asc")
 	@GenericPredicateField
 	private String codigo;
 	
-	@Column(name = "NM_ENTIDADE", nullable = false, length = 80)
+	@Column(name = "I_ENTID", nullable = false, length = 80)
 	@GenericPredicateField
 	private String descricao;
 	
-	@Column(name = "TX_COMENTARIO", nullable = true, length = 512)
+	@Column(name = "R_COMEN", nullable = true, length = 512)
 	@GenericPredicateField
 	private String comentario;
 	
-	@Column(name = "IC_ATIVO", nullable = false, length = 1)
+	@Column(name = "C_ATIVO", nullable = false, length = 1)
 	private Boolean ativo;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_INCLUSAO", nullable = false)
+	@JoinColumn(name = "N_USUAR_INCL", nullable = false)
 	private Usuario usuarioInclusao;
 	
-	@Column(name = "DT_INCLUSAO", nullable = false)
+	@Column(name = "D_INCL", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_ALTERACAO", nullable = true)
+	@JoinColumn(name = "N_USUAR_ALT", nullable = true)
 	private Usuario usuarioAlteracao;
 	
-	@Column(name = "DT_ALTERACAO", nullable = true)
+	@Column(name = "D_ALT", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAlteracao;
 	

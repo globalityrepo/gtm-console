@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "ISC_TB021_MODULO")
+@Table(name = "MDULO")
 @NamedQueries({ @NamedQuery(name = "Modulo.findAll", query = "select t from Modulo t where t.ativo = true") })
 public class Modulo extends AbstractEntity {
 	
@@ -27,22 +27,22 @@ public class Modulo extends AbstractEntity {
 	private static final long serialVersionUID = -8649825128414549453L;
 	
 	@Id
-	@Column(name = "NU_MODULO", nullable = false, unique = true)
+	@Column(name = "N_MDULO", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_MODULO", nullable = false, length = 30)
+	@Column(name = "C_MDULO", nullable = false, length = 30)
 	@NotNull
 	private String codigo;
 	
-	@Column(name = "NM_MODULO", nullable = false, length = 80)
+	@Column(name = "I_MDULO", nullable = false, length = 80)
 	@NotNull
 	private String nome;
 		
-	@Column(name = "IC_ATIVO", nullable = false)
+	@Column(name = "C_ATIVO", nullable = false)
 	@NotNull
 	private Boolean ativo;
 	
-	@Column(name = "DT_CARGA", nullable = false)
+	@Column(name = "D_CARGA", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date dataCarga;

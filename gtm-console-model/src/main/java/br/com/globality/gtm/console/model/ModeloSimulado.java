@@ -3,50 +3,60 @@ package br.com.globality.gtm.console.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Leonardo Andrade
  *
  */
 @Entity
-@Table(name = "TRANS_GRP")
-@NamedQueries({ @NamedQuery(name = "TransacaoGrupo.findAll", query = "select t from TransacaoGrupo t") })
-@SequenceGenerator(name = "seq_transacao_grupo", sequenceName = "SQ12_TRA_GRUPO", initialValue = 1)
-public class TransacaoGrupo extends AbstractEntity {
+@Table(name = "MOD_SMULA")
+@NamedQueries({ @NamedQuery(name = "ModeloSimulado.findAll", query = "select t from ModeloSimulado t") })
+public class ModeloSimulado extends AbstractEntity {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8899438330866534742L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "N_TRANS_GRP", nullable = false, unique = true)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_transacao_grupo")
+	@Column(name = "N_MOD_SMULA", nullable = false, unique = true)
 	private Long id;
+	
+	@Column(name = "I_CAPAC", nullable = false, length = 80)
+	@NotNull
+	private String capacidade;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
 	@JoinColumn(name="N_TRANS", nullable=true)
 	private Transacao transacao;
 	
-	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="N_GRP", nullable=true)
-	private Grupo grupo;
-		
+	@Column(name = "C_TPO_MOD_SMULA", nullable = false, length = 1)
+	private String tipo;
+	
+	@Column(name = "C_SIT_MOD_SMULA", nullable = false, length = 1)
+	private String situacao;
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCapacidade() {
+		return capacidade;
+	}
+
+	public void setCapacidade(String capacidade) {
+		this.capacidade = capacidade;
 	}
 
 	public Transacao getTransacao() {
@@ -57,12 +67,20 @@ public class TransacaoGrupo extends AbstractEntity {
 		this.transacao = transacao;
 	}
 
-	public Grupo getGrupo() {
-		return grupo;
+	public String getTipo() {
+		return tipo;
 	}
 
-	public void setGrupo(Grupo grupo) {
-		this.grupo = grupo;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 
 	@Override
@@ -81,7 +99,7 @@ public class TransacaoGrupo extends AbstractEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TransacaoGrupo other = (TransacaoGrupo) obj;
+		ModeloSimulado other = (ModeloSimulado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

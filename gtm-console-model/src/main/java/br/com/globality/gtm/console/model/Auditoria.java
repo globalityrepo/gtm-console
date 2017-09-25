@@ -23,33 +23,33 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "ISC_TB006_AUDITORIA")
+@Table(name = "AUDIT")
 @NamedQueries({ @NamedQuery(name = "Auditoria.findAll", query = "select t from Auditoria t") })
-@SequenceGenerator(name = "seq_auditoria", sequenceName = "ISC_TB006_AUDITORIA_S", initialValue = 1)
+@SequenceGenerator(name = "seq_auditoria", sequenceName = "SQ02_AUDIT", initialValue = 1)
 public class Auditoria extends AbstractEntity {
 	
 	private static final long serialVersionUID = -4097276363737591925L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_auditoria")
-	@Column(name = "NU_AUDITORIA", nullable = false, unique = true)
+	@Column(name = "N_AUDIT", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "DE_AUDITORIA", nullable = false, length = 512)
+	@Column(name = "R_AUDIT", nullable = false, length = 512)
 	private String descricao;
 	
-	@Column(name = "TS_AUDITORIA", nullable = false)
+	@Column(name = "D_AUDIT", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
 	private Date data;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_USUARIO", nullable=false)
+	@JoinColumn(name="N_USUAR", nullable=false)
 	@NotNull
 	private Usuario usuario;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRANSACAO", nullable=false)
+	@JoinColumn(name="N_TRANS", nullable=false)
 	@NotNull
 	private Transacao transacao;
 	

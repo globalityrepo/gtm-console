@@ -14,7 +14,7 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB029_TRANSACAO_APLICACAO")
+@Table(name = "TRANS_APLIC")
 @NamedQueries({ @NamedQuery(name = "TransacaoAplicacao.findAll", query = "select t from TransacaoAplicacao t") })
 @RESTful("transacaoAplicacao")
 
@@ -26,13 +26,13 @@ public class TransacaoAplicacao extends AbstractEntity {
 	private static final long serialVersionUID = 6293970516601210319L;
 
 	@Id
-	@Column(name = "NU_TRANSACAO", nullable = false, unique = true)
+	@Column(name = "N_TRANS_GRP", nullable = false, unique = true)
 	private Long id;
 
-	@Column(name = "NU_APLICACAO", nullable = false)
+	@Column(name = "N_APLIC", nullable = false)
 	private Long numeroAplicacao;
 
-	@Column(name = "IC_TIPO_INTERACAO", nullable = false, length = 1)
+	@Column(name = "C_TPO_INTGC", nullable = false, length = 1)
 	private String indicadorAlteracao;
 
 	public Long getId() {

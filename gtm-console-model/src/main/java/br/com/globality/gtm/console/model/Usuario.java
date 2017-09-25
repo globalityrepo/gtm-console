@@ -24,7 +24,7 @@ import br.com.globality.gtm.console.model.annotation.GenericOrderByField;
  *
  */
 @Entity
-@Table(name = "ISC_TB020_USUARIO")
+@Table(name = "USUAR")
 @NamedQueries({ @NamedQuery(name = "Usuario.findAll", query = "select t from Usuario t") })
 @SequenceGenerator(name = "seq_usuario", sequenceName = "ISC_TB020_USUARIO_S", initialValue = 1)
 public class Usuario extends AbstractEntity {
@@ -32,41 +32,41 @@ public class Usuario extends AbstractEntity {
 	private static final long serialVersionUID = -8451060762259968019L;
 	
 	@Id
-	@Column(name = "NU_USUARIO", nullable = false, unique = true)
+	@Column(name = "N_USUAR", nullable = false, unique = true)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
 	@GenericOrderByField("desc")
 	private Long id;
 	
-	@Column(name = "CO_USUARIO", nullable = false, length = 30)
+	@Column(name = "C_USUAR", nullable = false, length = 30)
 	@NotNull
 	private String codigo;
 	
-	@Column(name = "TX_SENHA", nullable = false, length = 80)
+	@Column(name = "R_SENHA", nullable = false, length = 80)
 	@NotNull
 	private String senha;
 	
-	@Column(name = "NM_USUARIO", nullable = false, length = 80)
+	@Column(name = "I_USUAR", nullable = false, length = 80)
 	@NotNull
 	private String nome;
 	
-	@Column(name = "TX_EMAIL", nullable = false, length = 80)
+	@Column(name = "R_EMAIL", nullable = false, length = 80)
 	@NotNull
 	private String email;
 	
-	@Column(name = "IC_ATIVO", nullable = false, length = 1)
+	@Column(name = "C_ATIVO", nullable = false, length = 1)
 	@NotNull
 	private Boolean ativo;
 	
-	@Column(name = "IC_BLOQUEADO", nullable = false, length = 1)
+	@Column(name = "C_BLOQ", nullable = false, length = 1)
 	@NotNull
 	private Boolean bloqueado;
 	
-	@Column(name = "IC_ADM_DEPARA", nullable = false, length = 1)
+	@Column(name = "C_ADM_ORIGE_PARA", nullable = false, length = 1)
 	@NotNull
 	private Boolean admDePara;
 		
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_PERFIL", nullable=false)
+	@JoinColumn(name="N_PRFIL", nullable=false)
 	@NotNull
 	private Perfil perfil;
 		

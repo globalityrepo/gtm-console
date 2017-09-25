@@ -15,7 +15,7 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB010_EVT_NIVEL")
+@Table(name = "EVNTO_NVEL")
 @RESTful(value="eventonivel")
 public class EventoNivel extends AbstractEntity {
 
@@ -25,16 +25,16 @@ public class EventoNivel extends AbstractEntity {
 	private static final long serialVersionUID = -3148007011130592061L;
 
 	@Id
-	@Column(name = "CO_EVT_NIVEL", nullable = false, unique = true, length = 1)
+	@Column(name = "C_EVNTO_NVEL", nullable = false, unique = true, length = 1)
 	@GenericPredicateField
 	@GenericOrderByField("asc")
 	private String id;
 
-	@Column(name = "DE_EVT_NIVEL", nullable = true, length = 512)
+	@Column(name = "R_EVNTO_NVEL", nullable = true, length = 512)
 	@GenericPredicateField
 	private String descricao;
 
-	@Column(name = "CLASSE_NIVEL_EVENTO", nullable = true)
+	@Column(name = "N_CLASS_NVEL_EVNTO", nullable = true)
 	private Long ordem;
 		
 	@Transient

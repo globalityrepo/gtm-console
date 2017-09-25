@@ -28,9 +28,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB033_ENTID_APLIC_DE_PARA")
+@Table(name = "ENTID_APLIC_ORIGE_PARA")
 @NamedQueries({ @NamedQuery(name = "EntidadeAplicacaoDePara.findAll", query = "select t from EntidadeAplicacaoDePara t") })
-@SequenceGenerator(name = "seq_entidade_aplicacao_de_para", sequenceName = "ISC_TB033_ENTID_APLIC_DE_PAR_S", initialValue = 1)
+@SequenceGenerator(name = "seq_entidade_aplicacao_de_para", sequenceName = "SQ04_ENTID_APLIC_ORIGE_PARA", initialValue = 1)
 @RESTful
 public class EntidadeAplicacaoDePara extends AbstractEntity {
 	
@@ -41,41 +41,41 @@ public class EntidadeAplicacaoDePara extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_entidade_aplicacao_de_para")
-	@Column(name = "NU_ENT_APL_DE_PARA", nullable = false, unique = true)
+	@Column(name = "N_ENTID_APLIC_ORIGE_PARA", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_ENT_APL_DE_PARA", nullable = true, length = 30)
+	@Column(name = "C_ENTID_APLIC_ORIGE_PARA", nullable = true, length = 30)
 	@GenericOrderByField("asc")
 	@GenericPredicateField
 	private String codigo;
 	
-	@Column(name = "IC_ATIVO", nullable = false, length = 1)
+	@Column(name = "C_ATIVO", nullable = false, length = 1)
 	private boolean ativo;
 	
-	@Column(name = "IC_ACESSO_LIBERADO", nullable = false, length = 1)
+	@Column(name = "C_ACSSO_LIBRD", nullable = false, length = 1)
 	private Boolean liberarAcesso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_ENTIDADE_APLICACAO_DE", nullable = false)
+	@JoinColumn(name = "N_ENTID_APLIC_ORIGE", nullable = false)
 	private EntidadeAplicacao entidadeAplicacaoDe;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_ENTIDADE_APLICACAO_PARA", nullable = false)
+	@JoinColumn(name = "N_ENTID_APLIC_PARA", nullable = false)
 	private EntidadeAplicacao entidadeAplicacaoPara;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_INCLUSAO", nullable = false)
+	@JoinColumn(name = "N_USUAR_INCL", nullable = false)
 	private Usuario usuarioInclusao;
 	
-	@Column(name = "DT_INCLUSAO", nullable = false)
+	@Column(name = "D_INCL", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_ALTERACAO", nullable = true)
+	@JoinColumn(name = "N_USUAR_ALT", nullable = true)
 	private Usuario usuarioAlteracao;
 	
-	@Column(name = "DT_ALTERACAO", nullable = true)
+	@Column(name = "D_ALT", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAlteracao;
 	

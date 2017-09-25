@@ -20,7 +20,7 @@ import br.com.globality.gtm.console.model.compositeId.TransacaoPassoAcaoPendente
  *
  */
 @Entity
-@Table(name = "ISC_TB016_TRA_PAS_ACA_PEN_EVT")
+@Table(name = "TRANSPASSOACAOPENDEVNTO")
 public class TransacaoPassoAcaoPendenteEvento extends AbstractEntity {
 
 	/**
@@ -32,21 +32,21 @@ public class TransacaoPassoAcaoPendenteEvento extends AbstractEntity {
 	private TransacaoPassoAcaoPendenteEventoCompositeId id;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_PASSO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_PASSO", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("codigo")
 	private TransacaoPasso transacaoPasso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="CO_EVT_TIPO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="C_EVNTO_TPO", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("id")
 	private EventoTipo eventoTipo;
 	
-	@Column(name = "DT_TRA_ACA_PENDENTE", nullable=false, insertable=false, updatable=false)
+	@Column(name = "D_TRANS_ACAO_PEND", nullable=false, insertable=false, updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_EVT_INSTANCIA", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_EVNTO_INSTN", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("id")
 	private EventoInstancia eventoInstancia;
 	

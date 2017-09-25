@@ -20,7 +20,7 @@ import br.com.globality.gtm.console.model.compositeId.TransacaoPassoAcaoPendente
  *
  */
 @Entity
-@Table(name = "ISC_TB015_TRA_PAS_ACA_PENDENTE")
+@Table(name = "TRANS_PASSOACAOPEND")
 public class TransacaoPassoAcaoPendente extends AbstractEntity {
 
 	/**
@@ -32,27 +32,27 @@ public class TransacaoPassoAcaoPendente extends AbstractEntity {
 	private TransacaoPassoAcaoPendenteCompositeId id;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_PASSO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_PASSO", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("codigo")
 	private TransacaoPasso transacaoPasso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="CO_EVT_TIPO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="C_EVNTO_TPO", nullable=false, insertable=false, updatable=false)
 	@GenericPredicateField("id")
 	private EventoTipo eventoTipo;
 	
-	@Column(name = "DT_TRA_ACA_PENDENTE", nullable=false, insertable=false, updatable=false)
+	@Column(name = "D_TRANS_ACAO_PEND", nullable=false, insertable=false, updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
-	@Column(name = "DT_TRA_ACA_PEN_CLOSED", nullable = true)
+	@Column(name = "D_TRANS_ACAO_PEND_FCHDO", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataFechamento;
 	
-	@Column(name = "CD_TRA_ACA_PEN_USER", nullable = true, length = 6)
+	@Column(name = "C_TRANS_ACAO_PEND_USUAR", nullable = true, length = 6)
 	private String codigoUsuario;
 
-	@Column(name = "IC_TRA_ACA_PEN_STATUS", nullable = true, length = 1)
+	@Column(name = "C_TRANS_ACAO_PEND_STTUS", nullable = true, length = 1)
 	private String status;
 
 	public TransacaoPassoAcaoPendenteCompositeId getId() {

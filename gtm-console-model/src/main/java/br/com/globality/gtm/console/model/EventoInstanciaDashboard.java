@@ -28,48 +28,48 @@ public class EventoInstanciaDashboard extends AbstractEntity {
 	private static final long serialVersionUID = -5195532904041444691L;
 
 	@Id
-	@Column(name = "NU_TRA_EVT_INSTANCIA", nullable = false, unique = true, length = 36)
+	@Column(name = "N_TRANS_EVNTO_INSTN", nullable = false, unique = true, length = 36)
 	private String id;
 	
-	@Column(name = "DE_EVT_INSTANCIA", nullable = true, length = 512)
+	@Column(name = "R_EVNTO_INSTN", nullable = true, length = 512)
 	private String descricao;
 
-	@Column(name = "TS_EVT_INSTANCIA", nullable = true)
+	@Column(name = "A_EVNTO_INSTN", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
-	@Column(name = "DE_TRA_PASSO", nullable = true, length = 512)
+	@Column(name = "R_TRANS_PASSO", nullable = true, length = 512)
 	private String descricaoTransacaoPasso;
 		
-	@Column(name = "CO_EVT_TIPO", nullable = true, length = 4)
+	@Column(name = "C_EVNTO_TPO", nullable = true, length = 4)
 	private String codigoEventoTipo;
 	
-	@Column(name = "CO_EVT_NIVEL", nullable = true, length = 1)
+	@Column(name = "C_EVNTO_NVEL", nullable = true, length = 1)
 	private String codigoEventoNivel;
 	
-	@Column(name = "DE_EVT_NIVEL", nullable = true, length = 512)
+	@Column(name = "R_EVNTO_NVEL", nullable = true, length = 512)
 	private String descricaoEventoNivel;
 	
-	@Column(name = "CO_GRUPO", nullable = true, length = 64)
+	@Column(name = "C_GRP", nullable = true, length = 64)
 	private String codigoGrupo;
 	
-	@Column(name = "NU_TRA_INSTANCIA", nullable = true, length = 36)
+	@Column(name = "N_TRANS_INSTN", nullable = true, length = 36)
 	private String idTransacaoInstancia;
 	
-	@Column(name = "TS_TRA_INSTANCIA", nullable = true)
+	@Column(name = "A_TRANS_INSTN", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataTransacaoInstancia;
 	
-	@Column(name = "NU_TRANSACAO", nullable = true)
+	@Column(name = "N_TRANS", nullable = true)
 	private Long idTransacao;
 	
-	@Column(name = "CO_TRANSACAO", nullable = true, length = 64)
+	@Column(name = "C_TRANS", nullable = true, length = 64)
 	private String codigoTransacao;
 	
 	@Column(name = "IN_HAS_CONTEUDO", nullable = false, length = 1)
 	private Boolean possuiConteudo;
 	
-	@Column(name = "ID_EVT_INSTANCIA_PAI", nullable = true, length = 36)
+	@Column(name = "C_EVNTO_INSTN_PAI", nullable = true, length = 36)
 	private String idEventoInstanciaPai;
 	
 	@Transient

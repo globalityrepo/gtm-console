@@ -23,9 +23,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB001_APLICACAO")
+@Table(name = "APLIC")
 @NamedQueries({ @NamedQuery(name = "Aplicacao.findAll", query = "select t from Aplicacao t") })
-@SequenceGenerator(name = "seq_aplicacao", sequenceName = "ISC_TB001_APLICACAO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_aplicacao", sequenceName = "SQ01_APLIC", initialValue = 1)
 @RESTful
 public class Aplicacao extends AbstractEntity {
 
@@ -36,20 +36,20 @@ public class Aplicacao extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_aplicacao")
-	@Column(name = "NU_APLICACAO", nullable = false, unique = true)
+	@Column(name = "N_APLIC", nullable = false, unique = true)
 	private Long id;
 
-	@Column(name = "CO_APLICACAO", nullable = true, length = 64)
+	@Column(name = "C_APLIC", nullable = true, length = 64)
 	@GenericOrderByField("asc")
 	@GenericPredicateField
 	private String codigo;
 
-	@Column(name = "DE_APLICACAO", nullable = true, length = 512)
+	@Column(name = "R_APLIC", nullable = true, length = 512)
 	@GenericPredicateField
 	private String descricao;
 
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_DIVISAO", nullable = true)
+	@JoinColumn(name = "N_DIVIS", nullable = true)
 	@GenericPredicateField("codigo")
 	private Divisao divisao;
 	

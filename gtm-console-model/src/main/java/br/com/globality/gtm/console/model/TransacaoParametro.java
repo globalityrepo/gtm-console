@@ -24,9 +24,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB013_TRA_PARAMETRO ")
+@Table(name = "TRANS_PARM")
 @NamedQueries({ @NamedQuery(name = "TransacaoParametro.findAll", query = "select t from TransacaoParametro t") })
-@SequenceGenerator(name = "seq_transacao_paramentro", sequenceName = "ISC_TB013_TRA_PARAMETRO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_transacao_paramentro", sequenceName = "SQ13_TRA_PARAMETRO", initialValue = 1)
 @RESTful
 public class TransacaoParametro extends AbstractEntity {
 
@@ -37,38 +37,38 @@ public class TransacaoParametro extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_transacao_paramentro")
-	@Column(name = "NU_PARAMETRO", nullable = false, unique = true)
+	@Column(name = "N_PARM", nullable = false, unique = true)
 	private Long id;
 
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRANSACAO", nullable=true)
+	@JoinColumn(name="N_TRANS", nullable=true)
 	@GenericPredicateField("codigo")
 	private Transacao transacao;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="CO_EVT_TIPO", nullable=true)
+	@JoinColumn(name="C_EVNTO_TPO", nullable=true)
 	@GenericPredicateField("id")
 	private EventoTipo eventoTipo;
 	
-	@Column(name = "NO_PARAMETRO", nullable = true, length = 64)
+	@Column(name = "I_PARM", nullable = true, length = 64)
 	@GenericPredicateField
 	private String nome;
 	
-	@Column(name = "NO_PAR_NAMESPACE", nullable = true, length = 512)
+	@Column(name = "I_PARM_ENDER", nullable = true, length = 512)
 	@GenericPredicateField
 	private String namespace;
 
-	@Column(name = "NO_PAR_PREFIXO", nullable = true, length = 512)
+	@Column(name = "I_PARM_PREFX", nullable = true, length = 512)
 	@GenericPredicateField
 	private String prefixo;
 
-	@Column(name = "NO_PAR_CAMINHO", nullable = true, length = 512)
+	@Column(name = "I_PARM_CMNHO", nullable = true, length = 512)
 	private String caminho;
 
-	@Column(name = "IC_PAR_MOMENTO", nullable = true, length = 1)
+	@Column(name = "C_PARM_MOMEN", nullable = true, length = 1)
 	private String momento;
 
-	@Column(name = "IC_PAR_ATIVO", nullable = true, length = 1)
+	@Column(name = "C_PARM_ATIVO", nullable = true, length = 1)
 	@GenericPredicateField
 	private String ativo;
 		

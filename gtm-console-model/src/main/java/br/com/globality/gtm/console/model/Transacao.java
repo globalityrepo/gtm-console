@@ -23,9 +23,9 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB003_TRANSACAO")
+@Table(name = "TRANS")
 @NamedQueries({ @NamedQuery(name = "Transacao.findAll", query = "select t from Transacao t") })
-@SequenceGenerator(name = "seq_transacao", sequenceName = "ISC_TB003_TRANSACAO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_transacao", sequenceName = "SQ15_TRANS", initialValue = 1)
 @RESTful
 public class Transacao extends AbstractEntity {
 	
@@ -36,29 +36,29 @@ public class Transacao extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_transacao")
-	@Column(name = "NU_TRANSACAO", nullable = false, unique = true)
+	@Column(name = "N_TRANS", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_TRANSACAO", nullable = true, length = 64)
+	@Column(name = "C_TRANS", nullable = true, length = 64)
 	@NotNull
 	@GenericOrderByField("asc")
 	@GenericPredicateField
 	private String codigo;
 	
-	@Column(name = "DE_TRANSACAO", nullable = true, length = 512)
+	@Column(name = "R_TRANS", nullable = true, length = 512)
 	@NotNull
 	@GenericPredicateField
 	private String descricao;
 	
-	@Column(name = "QT_DIA_EVENTO", nullable = true)
+	@Column(name = "Q_DIA_EVNTO", nullable = true)
 	@NotNull
 	private Long qtdeDiaEvento;
 	
-	@Column(name = "QT_DIA_CONTEUDO_EVENTO", nullable = true)
+	@Column(name = "Q_DIA_CONTD_EVNTO", nullable = true)
 	@NotNull
 	private Long qtdeDiaConteudoEvento;
 	
-	@Column(name = "IC_TRANSACAO_RESTRICAO", nullable = true, length = 1)
+	@Column(name = "C_TRANS_REST", nullable = true, length = 1)
 	@NotNull
 	@GenericPredicateField
 	private String restricao;

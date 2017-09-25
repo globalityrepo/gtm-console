@@ -21,7 +21,7 @@ import br.com.globality.gtm.console.model.compositeId.TransacaoPassoAcaoTodoComp
  *
  */
 @Entity
-@Table(name = "ISC_TB005_TRA_PAS_ACAO_TODO")
+@Table(name = "TRANS_PASSOACAOTODO")
 @NamedQueries({ @NamedQuery(name = "TransacaoPassoAcaoTodo.findAll", query = "select t from TransacaoPassoAcaoTodo t") })
 public class TransacaoPassoAcaoTodo extends AbstractEntity {
 	
@@ -34,24 +34,24 @@ public class TransacaoPassoAcaoTodo extends AbstractEntity {
 	private TransacaoPassoAcaoTodoCompositeId id;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_PASSO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_PASSO", nullable=false, insertable=false, updatable=false)
 	private TransacaoPasso transacaoPasso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="CO_EVT_TIPO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="C_EVNTO_TPO", nullable=false, insertable=false, updatable=false)
 	private EventoTipo eventoTipo;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_EVT_INSTANCIA", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_TRANS_EVNTO_INSTN", nullable=false, insertable=false, updatable=false)
 	private EventoInstancia eventoInstancia;
 	
-	@Column(name = "IC_TRA_ACA_TOD_STATUS", nullable = true, length = 1)
+	@Column(name = "C_TRANS_ACAO_TODO_STTUS", nullable = true, length = 1)
 	private String status;
 	
-	@Column(name = "QT_TRA_ACA_TOD_TENTATIVAS", nullable = true)
+	@Column(name = "Q_TRANS_ACAO_TODO_TENTV", nullable = true)
 	private Long qtdeTentativas;
 	
-	@Column(name = "DT_TRA_ACA_TODO", nullable = true)
+	@Column(name = "D_TRANS_ACAO_TODO", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	

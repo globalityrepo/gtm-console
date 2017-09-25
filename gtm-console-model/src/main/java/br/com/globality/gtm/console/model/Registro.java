@@ -26,9 +26,9 @@ import br.com.globality.gtm.console.model.annotation.GenericPredicateField;
  *
  */
 @Entity
-@Table(name = "ISC_TB032_REGISTRO")
+@Table(name = "REG")
 @NamedQueries({ @NamedQuery(name = "Registro.findAll", query = "select t from Registro t") })
-@SequenceGenerator(name = "seq_registro", sequenceName = "ISC_TB032_REGISTRO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_registro", sequenceName = "SQ10_REG", initialValue = 1)
 public class Registro extends AbstractEntity {
 	
 	/**
@@ -38,41 +38,41 @@ public class Registro extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_registro")
-	@Column(name = "NU_REGISTRO", nullable = false, unique = true)
+	@Column(name = "N_REG", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "CO_REGISTRO", nullable = true, length = 30)
+	@Column(name = "C_REG", nullable = true, length = 30)
 	@GenericOrderByField("asc")
 	@GenericPredicateField
 	private String codigo;
 	
-	@Column(name = "DE_REGISTRO", nullable = false, length = 512)
+	@Column(name = "R_REG", nullable = false, length = 512)
 	@GenericPredicateField
 	private String descricao;
 	
-	@Column(name = "IC_ATIVO", nullable = false, length = 1)
+	@Column(name = "C_ATIVO", nullable = false, length = 1)
 	private boolean ativo;
 	
-	@Column(name = "IC_IMPORTADO", nullable = false, length = 1)
+	@Column(name = "C_IMPORTADO", nullable = false, length = 1)
 	private boolean importado;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_ENTIDADE_APLICACAO", nullable = false)
+	@JoinColumn(name = "N_ENTID_APLIC", nullable = false)
 	private EntidadeAplicacao entidadeAplicacao;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_INCLUSAO", nullable = false)
+	@JoinColumn(name = "N_USUAR_INCL", nullable = false)
 	private Usuario usuarioInclusao;
 	
-	@Column(name = "DT_INCLUSAO", nullable = false)
+	@Column(name = "D_INCL", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_ALTERACAO", nullable = true)
+	@JoinColumn(name = "N_USUAR_ALT", nullable = true)
 	private Usuario usuarioAlteracao;
 	
-	@Column(name = "DT_ALTERACAO", nullable = true)
+	@Column(name = "D_ALT", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAlteracao;
 	

@@ -24,32 +24,32 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "ISC_TB017_TRA_PASSO")
+@Table(name = "TRANS_PASSO")
 @NamedQueries({ @NamedQuery(name = "TransacaoPasso.findAll", query = "select t from TransacaoPasso t") })
-@SequenceGenerator(name = "seq_transacao_passo", sequenceName = "ISC_TB017_TRA_PASSO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_transacao_passo", sequenceName = "SQ14_TRA_PASSO", initialValue = 1)
 @RESTful
 public class TransacaoPasso extends AbstractEntity {
 	
 	private static final long serialVersionUID = 2337198258061138851L;
 
 	@Id
-	@Column(name = "NU_TRA_PASSO", nullable = false, unique = true)
+	@Column(name = "N_TRANS_PASSO", nullable = false, unique = true)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_transacao_passo")
 	private Long id;
 	
-	@Column(name = "CO_TRA_PASSO", nullable = true, length = 64)
+	@Column(name = "C_TRANS_PASSO", nullable = true, length = 64)
 	@GenericPredicateField
 	private String codigo;
 	
-	@Column(name = "DE_TRA_PASSO", nullable = true, length = 512)
+	@Column(name = "R_TRANS_PASSO", nullable = true, length = 512)
 	@GenericPredicateField
 	private String descricao;
 		
-	@Column(name = "IC_EVT_INS_CONT", nullable = true, length = 1)
+	@Column(name = "C_EVNTO_INSTN_CONTD", nullable = true, length = 1)
 	private String gravarNaBase;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRANSACAO", nullable=true)
+	@JoinColumn(name="N_TRANS", nullable=true)
 	@GenericPredicateField("codigo")
 	private Transacao transacao;
 	

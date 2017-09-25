@@ -24,9 +24,9 @@ import javax.persistence.Transient;
  *
  */
 @Entity
-@Table(name = "ISC_TB031_ENTIDADE_APLICACAO")
+@Table(name = "ENTID_APLIC")
 @NamedQueries({ @NamedQuery(name = "EntidadeAplicacao.findAll", query = "select t from EntidadeAplicacao t") })
-@SequenceGenerator(name = "seq_entidade_aplicacao", sequenceName = "ISC_TB031_ENTIDADE_APLICACAO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_entidade_aplicacao", sequenceName = "SQ06_ENTID_APLIC", initialValue = 1)
 public class EntidadeAplicacao extends AbstractEntity {
 	
 	/**
@@ -36,36 +36,36 @@ public class EntidadeAplicacao extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_entidade_aplicacao")
-	@Column(name = "NU_ENTIDADE_APLICACAO", nullable = false, unique = true)
+	@Column(name = "N_ENTID_APLIC", nullable = false, unique = true)
 	private Long id;
 	
-	@Column(name = "IC_ATIVO", nullable = false, length = 1)
+	@Column(name = "C_ATIVO", nullable = false, length = 1)
 	private boolean ativo;
 	
-	@Column(name = "IC_ACESSO_LIBERADO", nullable = false, length = 1)
+	@Column(name = "C_ACSSO_LIBRD", nullable = false, length = 1)
 	private Boolean liberarAcesso;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_ENTIDADE", nullable = false)
+	@JoinColumn(name = "N_ENTID", nullable = false)
 	private Entidade entidade;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_APLICACAO", nullable = false)
+	@JoinColumn(name = "N_APLIC", nullable = false)
 	private Aplicacao aplicacao;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_INCLUSAO", nullable = false)
+	@JoinColumn(name = "N_USUAR_INCL", nullable = false)
 	private Usuario usuarioInclusao;
 	
-	@Column(name = "DT_INCLUSAO", nullable = false)
+	@Column(name = "D_INCL", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInclusao;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name = "NU_USUARIO_ALTERACAO", nullable = true)
+	@JoinColumn(name = "N_USUAR_ALT", nullable = true)
 	private Usuario usuarioAlteracao;
 	
-	@Column(name = "DT_ALTERACAO", nullable = true)
+	@Column(name = "D_ALT", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAlteracao;
 	

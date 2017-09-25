@@ -16,7 +16,7 @@ import br.com.globality.gtm.console.model.compositeId.UsuarioGrupoCompositeId;
  *
  */
 @Entity
-@Table(name = "ISC_TB026_USUARIO_GRUPO")
+@Table(name = "USUAR_GRP")
 @NamedQueries({ @NamedQuery(name = "UsuarioGrupo.findAll", query = "select t from UsuarioGrupo t") })
 public class UsuarioGrupo extends AbstractEntity {
 
@@ -29,11 +29,11 @@ public class UsuarioGrupo extends AbstractEntity {
 	private UsuarioGrupoCompositeId id;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_USUARIO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_USUAR", nullable=false, insertable=false, updatable=false)
 	private Usuario usuario;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_GRUPO", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="N_GRP", nullable=false, insertable=false, updatable=false)
 	private Grupo grupo;
 
 	public UsuarioGrupoCompositeId getId() {

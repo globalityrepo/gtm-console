@@ -13,10 +13,10 @@ public class UsuarioGrupoCompositeId implements Serializable {
 	 */
 	private static final long serialVersionUID = -446226590403417995L;
 
-	@Column(name = "NU_USUARIO", nullable = false)
+	@Column(name = "N_USUAR", nullable = false)
 	private Long idUsuario;
     
-	@Column(name = "NU_GRUPO", nullable = false)
+	@Column(name = "N_GRP", nullable = false)
 	private Long idGrupo;
 
 	public Long getIdUsuario() {

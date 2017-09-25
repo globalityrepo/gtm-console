@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  *
  */
 @Entity
-@Table(name = "ISC_TB012_TRA_INSTANCIA")
+@Table(name = "TRANS_INSTN")
 @NamedQueries({ @NamedQuery(name = "TransacaoInstancia.findAll", query = "select t from TransacaoInstancia t") })
 public class TransacaoInstancia extends AbstractEntity {
 
@@ -32,19 +32,19 @@ public class TransacaoInstancia extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "NU_TRA_INSTANCIA", nullable = false, unique = true, length = 36)
+	@Column(name = "N_TRANS_INSTN", nullable = false, unique = true, length = 36)
 	private String id;
 
-	@Column(name = "TS_TRA_INSTANCIA", nullable = true)
+	@Column(name = "A_TRANS_INSTN", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_GRUPO", nullable=true)
+	@JoinColumn(name="N_TRANS_GRP", nullable=true)
 	private TransacaoGrupo transacaoGrupo;
 	
 	@ManyToOne(optional=true, cascade=CascadeType.REFRESH)
-	@JoinColumn(name="NU_TRA_INS_PAI", nullable=true)
+	@JoinColumn(name="N_TRANS_INSTN_PAI", nullable=true)
 	private TransacaoInstancia transacaoInstanciaPai;
 
 	public String getId() {

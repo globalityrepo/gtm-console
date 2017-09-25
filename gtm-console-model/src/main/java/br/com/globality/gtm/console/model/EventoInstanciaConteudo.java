@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
  *
  */
 @Entity
-@Table(name = "ISC_TB009_EVT_INS_CONTEUDO")
+@Table(name = "EVNTO_INSTN_CONTD")
 @NamedQueries({ @NamedQuery(name = "EventoInstanciaConteudo.findAll", query = "select t from EventoInstanciaConteudo t") })
 public class EventoInstanciaConteudo extends AbstractEntity {
 
@@ -33,19 +33,19 @@ public class EventoInstanciaConteudo extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "NU_TRA_EVT_INSTANCIA", nullable = false, unique = true, length = 36)
+	@Column(name = "N_TRANS_EVNTO_INSTN", nullable = false, unique = true, length = 36)
 	private String id;
 	
-	@Column(name = "TXT_TRA_EVT_INS_CONTEUDO", columnDefinition = "CLOB", nullable = true)
+	@Column(name = "B_TRANS_EVNTO_INSTN_CONTD", columnDefinition = "CLOB", nullable = true)
 	@Lob
 	private String conteudo;
 
-	@Column(name = "TS_TRA_EVT_INS_CONTEUDO", nullable = true)
+	@Column(name = "A_TRANS_EVNTO_INSTN_CONTD", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
 	@ManyToOne(optional = true, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "NU_APLICACAO", nullable = true)
+	@JoinColumn(name = "N_APLIC", nullable = true)
 	private Aplicacao aplicacao;
 	
 	public String getId() {
