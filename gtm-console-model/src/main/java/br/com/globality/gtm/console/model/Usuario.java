@@ -26,7 +26,7 @@ import br.com.globality.gtm.console.model.annotation.GenericOrderByField;
 @Entity
 @Table(name = "USUAR")
 @NamedQueries({ @NamedQuery(name = "Usuario.findAll", query = "select t from Usuario t") })
-@SequenceGenerator(name = "seq_usuario", sequenceName = "ISC_TB020_USUARIO_S", initialValue = 1)
+@SequenceGenerator(name = "seq_usuario", sequenceName = "SQ17_USUAR", initialValue = 1)
 public class Usuario extends AbstractEntity {
 
 	private static final long serialVersionUID = -8451060762259968019L;

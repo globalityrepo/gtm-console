@@ -75,20 +75,20 @@ public class UsuarioService {
 			
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" SELECT REC.NU_RECURSO as id, REC.CO_RECURSO as codigo ");
-			sql.append(" FROM ISC_TB023_RECURSO REC ");
-			sql.append(" WHERE REC.IC_ATIVO = 1 ");
-			sql.append(" CONNECT BY PRIOR REC.NU_RECURSO_PAI = REC.NU_RECURSO ");
-			sql.append(" START WITH REC.NU_RECURSO IN ( ");
-			sql.append("   SELECT REC.NU_RECURSO ");
-			sql.append("   FROM ISC_TB025_PERFIL_REC_PERMISSAO PRP ");
-			sql.append("   INNER JOIN ISC_TB023_RECURSO REC ");
-			sql.append("   ON REC.NU_RECURSO = PRP.NU_RECURSO ");
-			sql.append("   INNER JOIN ISC_TB022_PERMISSAO PMS ");
-			sql.append("   ON PMS.NU_PERMISSAO = PRP.NU_PERMISSAO ");
-			sql.append("   WHERE PRP.IC_ATIVO = 1 ");
-			sql.append("   AND PRP.NU_PERFIL = ? ");
-			sql.append("   AND PMS.CO_PERMISSAO = 'CON' ");
+			sql.append(" SELECT REC.N_REC as id, REC.C_REC as codigo ");
+			sql.append(" FROM REC ");
+			sql.append(" WHERE REC.C_ATIVO = 1 ");
+			sql.append(" CONNECT BY PRIOR REC.N_REC_PAI = REC.N_REC ");
+			sql.append(" START WITH REC.N_REC IN ( ");
+			sql.append("   SELECT REC.N_REC ");
+			sql.append("   FROM PRFIL_REC_PRMSS PRP ");
+			sql.append("   INNER JOIN REC ");
+			sql.append("   ON REC.N_REC = PRP.N_REC ");
+			sql.append("   INNER JOIN PRMSS PMS ");
+			sql.append("   ON PMS.N_PRMSS = PRP.N_PRMSS ");
+			sql.append("   WHERE PRP.C_ATIVO = 1 ");
+			sql.append("   AND PRP.N_PRFIL = ? ");
+			sql.append("   AND PMS.C_PRMSS = 'CON' ");
 			sql.append(" ) ");
 	
 			SQLQuery sqlQuery = session.createSQLQuery(sql.toString());

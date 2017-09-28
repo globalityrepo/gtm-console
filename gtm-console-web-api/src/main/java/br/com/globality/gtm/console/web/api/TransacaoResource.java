@@ -158,7 +158,7 @@ public class TransacaoResource {
 					transacaoPasso.setTransacao(voPrinc);
 					persistenceService.add(transacaoPasso);
 					// Incluindo níveis de eventos.
-					for (EventoNivel voChildAux : transacaoPasso.getEventoNiveis()) {
+					for (EventoNivel voChildAux : voAux.getEventoNiveis()) {
 						if (voChildAux.getSelecionado()) {
 							TransacaoPassoEventoNivel transacaoPassoEventoNivel = new TransacaoPassoEventoNivel();
 							transacaoPassoEventoNivel.setConteudo(voChildAux.getConteudo());
@@ -170,8 +170,8 @@ public class TransacaoResource {
 						}
 					}
 					// Incluindo ações.
-					if (transacaoPasso.getAcoes()!=null && !transacaoPasso.getAcoes().isEmpty()) {
-						for (TransacaoPassoAcao acao : transacaoPasso.getAcoes()) {
+					if (voAux.getAcoes()!=null && !voAux.getAcoes().isEmpty()) {
+						for (TransacaoPassoAcao acao : voAux.getAcoes()) {
 							TransacaoPassoAcaoCompositeId id = new TransacaoPassoAcaoCompositeId();
 							id.setIdEventoTipo(acao.getEventoTipo().getId());
 							id.setIdTransacaoPasso(transacaoPasso.getId());

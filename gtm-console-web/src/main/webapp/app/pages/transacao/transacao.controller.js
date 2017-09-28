@@ -102,7 +102,8 @@
         			'restricao': 'Y',
         			'parametros': [],
     				'passos': [],
-    				'grupos': []	
+    				'grupos': [],
+    				'modelosSimulados': []
         	};
     		
     		$scope.msgValidacaoCadastro = '';
@@ -120,7 +121,8 @@
 	    				'restricao': itemSel.restricao,
 	    				'parametros': itemSel.parametros,
 	    				'passos': itemSel.passos,
-	    				'grupos': itemSel.grupos	    				
+	    				'grupos': itemSel.grupos,	
+	    				'modelosSimulados': itemSel.modelosSimulados	
 	    		};
     			$scope.carregarParametros();
 	    		$scope.carregarPassos();
@@ -950,6 +952,82 @@
 				}
 			}
     	}	
+    	
+    	//=================
+	    // TAB MOCKUPS
+    	//=================
+    	$scope.itemTabMockup = {};
+    	$scope.limparItemTabMockupSel = limparItemTabMockupSel;
+    	$scope.selecionarItemTabMockup = selecionarItemTabMockup;
+    	$scope.fecharJanelaAddMockupModal = fecharJanelaAddMockupModal;
+    	$scope.adicionarMockup = adicionarMockup;
+    	$scope.alterarMockup = alterarMockup;
+    	$scope.removerMockup = removerMockup;
+    	$scope.execRemoverParametro = execRemoverMockup;
+    	$scope.execRemoverMockup = validarFormMockup;
+    	$scope.msgValidacaoCadMockup = '';
+    	
+	    function limparItemTabMockupSel() {
+	    	
+		}
+		
+		function selecionarItemTabMockup(itemSel) {
+			$scope.itemTabMockup = {
+    				'id': itemSel.id, 
+    				'capacidade': itemSel.capacidade,
+    				'tipo': itemSel.tipo,
+    				'situacao': itemSel.situacao
+    		};
+		}
+				
+		function fecharJanelaAddMockupModal() {
+	    	$scope.limparItemTabMockupSel();
+	    	$('#add-transacao-mockup-modal').modal('hide');
+		}
+		
+		function adicionarMockup() {
+			if (validarFormMockup()) {
+				
+				fecharJanelaAddMockupModal();
+			}
+		}
+		
+		function alterarMockup() {
+			if (validarFormMockup()) {
+				
+				fecharJanelaAddMockupModal();
+			}
+		}
+		
+		function removerMockup(itemSel) {
+        	if (itemSel.id>0) {
+        		$scope.dataLoading = true;
+        		$scope.execRemoverMockup(itemSel);      		
+        	}
+        	else {
+        		$scope.execRemoverMockup(itemSel);
+        	}    		
+    	}
+    	
+    	function execRemoverMockup(itemSel) {
+    		for (var i=0; i<$scope.item.modelosSimulados.length; i++) {
+				if ($scope.item.modelosSimulados[i].id == itemSel.id) {
+					$scope.item.modelosSimulados.splice(i,1);
+				}
+			}
+    	}	
+				
+		function resetValidacaoFormMockup() {
+        	$scope.msgValidacaoCadMockup = '';
+        }
+        
+        function validarFormMockup() {
+        	var isValid = true;
+    		for (var i=0; i<$scope.item.modelosSimulados.length; i++) {
+        		
+        	}
+        	return isValid;
+        }
 				
     }
     

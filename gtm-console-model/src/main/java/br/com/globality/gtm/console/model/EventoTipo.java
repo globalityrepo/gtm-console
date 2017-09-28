@@ -16,7 +16,7 @@ import br.com.globality.gtm.console.util.annotation.RESTful;
  *
  */
 @Entity
-@Table(name = "EVNTO_TIPO")
+@Table(name = "EVNTO_TPO")
 @NamedQueries({ @NamedQuery(name = "EventoTipo.findAll", query = "select t from EventoTipo t") })
 @RESTful("eventotipo")
 public class EventoTipo extends AbstractEntity {

@@ -90,6 +90,9 @@ public class Transacao extends AbstractEntity {
 	@Transient
 	private List<TransacaoGrupo> grupos;
 	
+	@Transient
+	private List<ModeloSimulado> modelosSimulados;
+	
 	@Transient 
 	private boolean selecionado;
 	
@@ -235,6 +238,14 @@ public class Transacao extends AbstractEntity {
 
 	public void setSelecionado(boolean selecionado) {
 		this.selecionado = selecionado;
+	}
+
+	public List<ModeloSimulado> getModelosSimulados() {
+		return modelosSimulados;
+	}
+
+	public void setModelosSimulados(List<ModeloSimulado> modelosSimulados) {
+		this.modelosSimulados = modelosSimulados;
 	}
 
 	@Override

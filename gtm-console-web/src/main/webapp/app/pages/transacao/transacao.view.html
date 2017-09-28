@@ -98,6 +98,7 @@
 					  <li id="tabPassosOpt"><a data-toggle="tab" data-target="#tabPassos">{{'label.passos' | translate}} ({{item.passos.length}})</a></li>
 					  <li id="tabParametrosOpt"><a data-toggle="tab" data-target="#tabParametros">{{'label.parametros' | translate}} ({{item.parametros.length}})</a></li>
 					  <li id="tabGruposOpt"><a data-toggle="tab" data-target="#tabGrupos">{{'label.grupos' | translate}} ({{item.grupos.length}})</a></li>
+					  <li id="tabMockupsOpt"><a data-toggle="tab" data-target="#tabMockups">{{'label.mockups' | translate}} ({{item.modelosSimulados.length}})</a></li>
 					</ul>
 						            		            	
 				   	<div class="tab-content" style="border-left: 1px solid #e3e3e3; border-right: 1px solid #e3e3e3; border-bottom: 1px solid #e3e3e3; height:326px;">
@@ -251,6 +252,47 @@
 							                    <td>{{transacaoGrupo.grupo.descricao}}</td>
 							                    <td class="actions">
 							                       	<a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerGrupo(transacaoGrupo)">{{'label.remover' | translate}}</a>	
+							                    </td>
+							                </tr> 
+							            </tbody>
+							         </table>
+							 
+							     </div>
+							 </div> <!-- /#list -->
+
+					  </div>
+					  
+					  <div id="tabMockups" class="tab-pane fade" style="padding-left:16px; padding-right:16px; padding-top:10px; padding-bottom:10px; height: 325px; overflow-y: auto;">
+					    
+							<div id="top" class="row">
+							    <div class="col-md-12 right" style="margin-top:-16px;">
+							        <a ng-class="'btn btn-' + config.skin + ' pull-right h2'" href="javascript:void(0)" data-toggle="modal" data-target="#add-transacao-mockup-modal">{{'label.adicionar' | translate}}</a>
+							    </div>
+							</div> <!-- /#top -->
+							
+							<div id="list" class="row">
+							 
+							    <div class="table-responsive col-md-12" style="margin-top:8px;">
+							        <table class="table table-striped" cellspacing="0" cellpadding="0">
+							            <thead>
+							                <tr>
+							                    <th>{{'label.capacidade' | translate}}</th>
+							                    <th width="200">{{'label.tipo' | translate}}</th>
+							                    <th width="200">{{'label.situacao' | translate}}</th>
+							                    <th width="130" class="actions">{{'label.acoes' | translate}}</th>      
+							                 </tr>
+							            </thead>
+							            <tbody>
+							                <tr ng-repeat="modeloSimulado in item.modelosSimulados">
+							                    <td>{{modeloSimulado.capacidade}}</td>
+							                    <td>{{modeloSimulado.tipo}}</td>
+							                    <td>{{modeloSimulado.situacao}}</td>
+							                    <td class="actions">
+							                        <!-- Controle de Alteração -->
+											        <a class="btn btn-grid-control btn-xs" href="javascript:void(0)" ng-click="selecionarItemTabMockup(modeloSimulado)" data-toggle="modal" data-target="#add-transacao-mockup-modal">{{'label.alterar' | translate}}</a>
+											       	&nbsp;
+											       	<!-- Controle de Exclusão -->
+											       	<a class="btn btn-grid-control btn-xs"  href="javascript:void(0)" ng-click="removerMockup(modeloSimulado)">{{'label.remover' | translate}}</a>
 							                    </td>
 							                </tr> 
 							            </tbody>
@@ -676,6 +718,39 @@
 	            	</div>
 	            	
 		        </div>
+	        </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adição Transação Modelo Simulado (Mockups) -->
+<div class="modal fade" id="add-transacao-mockup-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="margin-top:50px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form name="form" ng-submit="!itemTabMockup.id ? adicionarMockup() : alterarMockup()" role="form">
+	            <div class="modal-header">
+	                <button type="button" class="close" ng-click="fecharJanelaAddMockupModal()" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="modalLabel" ng-show="!itemTabMockup.id">{{'label.adicionarMockup' | translate}}</h4>
+	                <h4 class="modal-title" id="modalLabel" ng-show="itemTabMockup.id">{{'label.alterarMockup' | translate}}</h4>
+	            </div>
+	            <div class="modal-body">
+	              
+	                        
+	            </div>
+	            <div class="modal-footer">
+	            	<div class="row">
+		            	<div class="col-md-4" style="padding-top:10px; text-align:left;">
+		            		<label class="labelObrigatorioLegenda">*</label><label class="labelObrigatorioLegendaFrase">{{'label.campoobrigatorio' | translate}}</label>
+		    			</div>      
+		    			<div class="col-md-8">
+		    				<span style="color:#ff0000; font-size:10pt; margin-left:-30px; padding-top:10px;" ng-show="msgValidacaoCadMockup">{{msgValidacaoCadMockup}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            	<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			                <button type="submit" ng-class="'btn btn-' + config.skin">{{'label.concluir' | translate}}</button>&nbsp;&nbsp;
+			                <button type="button" class="btn btn-default" ng-click="fecharJanelaAddMockupModal()">{{'label.cancelar' | translate}}</button>
+		            	</div>
+		            </div>
+	            </div>
+	           
 	        </form>
         </div>
     </div>

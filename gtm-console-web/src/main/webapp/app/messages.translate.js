@@ -199,7 +199,12 @@ stockModule.config(['$translateProvider', function ($translateProvider) {
 	    'label.entidadeaplicacaoassociacaoredundante': 'As aplicações selecionadas já possuem um cruzamento cadastrado.',
 	    'label.registroA': 'Registro A',
 	    'label.registroB': 'Registro B',
-	    'label.mensagemadicioneumregistrocruzamento': 'Adicione, pelo menos, um registro ao cruzamento.'
+	    'label.mensagemadicioneumregistrocruzamento': 'Adicione, pelo menos, um registro ao cruzamento.',
+	    'label.mockups': 'Mockups',
+	    'label.capacidade': 'Capacidade',
+	    'label.situacao': 'Situação',
+	    'label.adicionarMockup': 'Adicionar Mockup',
+	    'label.alterarMockup': 'Alterar Mockup'
 	}); 
 	
 	$translateProvider.translations('en_US', {
@@ -401,7 +406,12 @@ stockModule.config(['$translateProvider', function ($translateProvider) {
 	    'label.entidadeaplicacaoassociacaoredundante': 'Already exists a cross data for the selected applications.',
 	    'label.registroA': 'Record A',
 	    'label.registroB': 'Record B',
-	    'label.mensagemadicioneumregistrocruzamento': 'Please, add one record to data cross at least.'
+	    'label.mensagemadicioneumregistrocruzamento': 'Please, add one record to data cross at least.',
+	    'label.mockups': 'Mockups',
+	    'label.capacidade': 'Capacity',
+	    'label.situacao': 'Status',
+	    'label.adicionarMockup': 'Add Mockup',
+	    'label.alterarMockup': 'Mockup Update'
 	}); 
 	
 	$translateProvider.translations('es_ES', {
@@ -603,7 +613,12 @@ stockModule.config(['$translateProvider', function ($translateProvider) {
 	    'label.entidadeaplicacaoassociacaoredundante': 'Ya existe una cruze de datos para las aplicaciones seleccionadas.',
 	    'label.registroA': 'Registro A',
 	    'label.registroB': 'Registro B',
-	    'label.mensagemadicioneumregistrocruzamento': 'Añada, al menos, un registro a la cruce de datos.'
+	    'label.mensagemadicioneumregistrocruzamento': 'Añada, al menos, un registro a la cruce de datos.',
+	    'label.mockups': 'Mockups',
+	    'label.capacidade': 'Capacidad',
+	    'label.situacao': 'Situación',
+	    'label.adicionarMockup': 'Añadir Mockup',
+	    'label.alterarMockup': 'Editar Mockup'
 	}); 
 	
 	$translateProvider.preferredLanguage('pt_BR');
